@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import Settings from './components/Settings';
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         >
           Learn React
         </a>
+        <Settings />
       </header>
     </div>
   );
