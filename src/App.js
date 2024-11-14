@@ -1,127 +1,64 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import axios from 'axios';
+import CohortList from './components/CohortList';
+import AddCohort from './components/AddCohort';
+import CohortDetails from './components/CohortDetails';
 import './App.css';
 
 function App() {
   const [cohorts, setCohorts] = useState([]);
-  const [newCohortName, setNewCohortName] = useState('');
-  const [inviteLink, setInviteLink] = useState('');
-  const [nameToJoin, setNameToJoin] = useState('');
 
-  // Fetch existing cohorts from the backend when the component mounts
   useEffect(() => {
-    axios.get('/api/cohorts')
+    axios.get('http://localhost:5000/api/cohorts')
       .then(response => setCohorts(response.data))
       .catch(error => console.error('Error fetching cohorts:', error));
   }, []);
 
-  // Add a new cohort
-  const handleAddCohort = async () => {
-    if (newCohortName.trim()) {
-      try {
-        // Send a POST request to create the new cohort
-        const response = await axios.post('/api/cohorts/create', { name: newCohortName, adminId: 'admin123' });
-        
-        // Update the state with the newly created cohort
-        setCohorts([...cohorts, response.data]);
-        setNewCohortName(''); // Reset the input field after the cohort is added
-      } catch (error) {
-        console.error('Error adding cohort:', error);
-      }
-    } else {
-      alert('Cohort name cannot be empty');
+  const addCohort = async (name) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/cohorts/create', { name });
+      setCohorts([...cohorts, response.data]);
+    } catch (error) {
+      console.error('Error adding cohort:', error);
     }
   };
 
-  // Remove a cohort
-  const handleRemoveCohort = async (cohortId) => {
+  const removeCohort = async (id) => {
     try {
-      await axios.delete(`/api/cohorts/${cohortId}`);
-      setCohorts(cohorts.filter((cohort) => cohort.id !== cohortId));
+      await axios.delete(`http://localhost:5000/api/cohorts/${id}`);
+      setCohorts(cohorts.filter(cohort => cohort.id !== id));
     } catch (error) {
       console.error('Error removing cohort:', error);
     }
   };
 
-  // Generate an invite link for a cohort
-  const generateInviteLink = async (cohortId) => {
+  const addMember = async (cohortId, memberName) => {
     try {
-      const response = await axios.get(`/api/cohorts/${cohortId}/inviteLink`);
-      setInviteLink(response.data.inviteLink);
+      const response = await axios.post(`http://localhost:5000/api/cohorts/${cohortId}/addMember`, { name: memberName });
+      setCohorts(cohorts.map(cohort => 
+        cohort.id === cohortId ? response.data : cohort
+      ));
     } catch (error) {
-      console.error('Error generating invite link:', error);
-    }
-  };
-
-  // Join cohort using invite link
-  const joinCohortWithInvite = async () => {
-    if (inviteLink && nameToJoin.trim()) {
-      try {
-        const response = await axios.post(`/api/cohorts/join/${inviteLink}`, { name: nameToJoin });
-        setCohorts(cohorts.map(cohort => {
-          if (cohort.id === response.data.id) {
-            cohort.members.push(nameToJoin);
-          }
-          return cohort;
-        }));
-        setInviteLink('');
-        setNameToJoin('');
-      } catch (error) {
-        console.error('Error joining cohort:', error);
-      }
+      console.error('Error adding member:', error);
     }
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <Router>
+      <div className="App">
         <h1>Cohort Management</h1>
-
-        {/* Add new cohort */}
-        <div>
-          <input
-            type="text"
-            placeholder="Enter cohort name"
-            value={newCohortName}
-            onChange={(e) => setNewCohortName(e.target.value)}
-          />
-          <button onClick={handleAddCohort}>Add Cohort</button>
-        </div>
-
-        {/* List of Cohorts */}
-        <div>
-          <h2>Existing Cohorts</h2>
-          {cohorts.map(cohort => (
-            <div key={cohort.id}>
-              <h3>{cohort.name}</h3>
-              <button onClick={() => handleRemoveCohort(cohort.id)}>Remove Cohort</button>
-              <button onClick={() => generateInviteLink(cohort.id)}>Generate Invite Link</button>
-
-              {/* Display invite link and join form */}
-              {inviteLink && inviteLink.includes(cohort.id.toString()) && (
-                <div>
-                  <p>Invite Link: {inviteLink}</p>
-                  <input
-                    type="text"
-                    placeholder="Enter your name to join"
-                    value={nameToJoin}
-                    onChange={(e) => setNameToJoin(e.target.value)}
-                  />
-                  <button onClick={joinCohortWithInvite}>Join Cohort</button>
-                </div>
-              )}
-
-              {/* Display members */}
-              <ul>
-                {cohort.members.map((member, index) => (
-                  <li key={index}>{member}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </header>
-    </div>
+        <nav>
+          <Link to="/">Cohort List</Link> | <Link to="/add-cohort">Add Cohort</Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<CohortList cohorts={cohorts} onRemoveCohort={removeCohort} />} />
+          <Route path="/add-cohort" element={<AddCohort onAddCohort={addCohort} />} />
+          <Route path="/cohort/:id" element={<CohortDetails cohorts={cohorts} onAddMember={addMember} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
