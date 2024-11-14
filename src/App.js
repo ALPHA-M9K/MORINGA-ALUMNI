@@ -12,6 +12,8 @@ import ContactUs from "./pages/ContactUs";
 import CookiePolicy from "./pages/CookiePolicy";
 import CopyrightPolicy from "./pages/CopyrightPolicy";
 import UserAgreement from "./pages/UserAgreement";
+import FundraiserPage from './components/ FundraiserPage';
+import Login from './components/Login';
 
 function App() {
   const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
@@ -57,7 +59,7 @@ function App() {
         {/* Main Content */}
         <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/HomePage" element={<HomePage />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/posts" element={<PostsPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
