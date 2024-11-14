@@ -12,7 +12,7 @@ const ChatDiscussionForum = () => {
   const [newSuccessStory, setNewSuccessStory] = useState("");
 
   useEffect(() => {
-    // Fetch initial posts and success stories from the server
+    
     fetchPosts();
     fetchSuccessStories();
   }, []);
@@ -81,7 +81,7 @@ const ChatDiscussionForum = () => {
         body: JSON.stringify({ content: newComment }),
       });
       const data = await response.json();
-      // Update the post with the new comment
+      
       setNewComment("");
     } catch (error) {
       console.error("Error creating comment:", error);
