@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import Button  from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import Textarea from "../components/ui/Textarea";
 
-const ChatDiscussionForum = () => {
+const Forum = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState("");
   const [newComment, setNewComment] = useState("");
@@ -129,7 +129,7 @@ const ChatDiscussionForum = () => {
 
       <Card className="col-span-2">
         <CardHeader>
-          <CardTitle>Discussion Forum</CardTitle>
+          <CardTitle>Forum</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -156,4 +156,4 @@ const ChatDiscussionForum = () => {
   );
 };
 
-export default ChatDiscussionForum;
+export default Forum;
