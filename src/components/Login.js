@@ -22,15 +22,22 @@ const Login = ({ setIsAuthenticated }) => {
 
     const storedEmail = localStorage.getItem("userEmail");
     const storedPassword = localStorage.getItem("userPassword");
+    const storedUserType = localStorage.getItem("userType"); 
 
     if (email === storedEmail && password === storedPassword) {
-      setIsAuthenticated(true); 
+      setIsAuthenticated(true);
       if (rememberMe) {
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
       }
-      alert("Login Successful! Redirecting to home page...");
-      navigate("/");
+      alert("Login Successful! Redirecting...");
+
+      
+      if (storedUserType === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/");
+      }
     } else {
       alert("Invalid email or password. Please try again.");
     }

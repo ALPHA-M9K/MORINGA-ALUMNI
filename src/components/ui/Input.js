@@ -1,4 +1,4 @@
-// src/components/ui/input.js
+
 import React from "react";
 
 const Input = ({ value, onChange, placeholder, className }) => {

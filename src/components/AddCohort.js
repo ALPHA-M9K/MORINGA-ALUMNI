@@ -1,4 +1,4 @@
-// src/components/AddCohort.js
+
 import React, { useState } from 'react';
 
 function AddCohort({ onAddCohort }) {

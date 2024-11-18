@@ -1,4 +1,4 @@
-// src/components/CohortDetails.js
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 

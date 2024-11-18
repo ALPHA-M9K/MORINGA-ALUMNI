@@ -1,4 +1,4 @@
-// src/components/ui/button.js
+
 import React from "react";
 
 const Button = ({ onClick, children, className, type = "button" }) => {

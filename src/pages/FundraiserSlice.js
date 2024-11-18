@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getFundraisers, createFundraiser } from './fundraiserAPI';
+import { getFundraisers, createFundraiser } from './FundraiserAPI';
 
 
 export const fetchFundraisers = createAsyncThunk('fundraiser/fetchFundraisers', async () => {

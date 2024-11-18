@@ -7,32 +7,31 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [userType, setUserType] = useState("user"); 
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
 
-if (!termsAccepted) {
-  alert("You must accept the Terms and Conditions to continue.");
-  return;
-}
+    if (!termsAccepted) {
+      alert("You must accept the Terms and Conditions to continue.");
+      return;
+    }
 
-if (password !== confirmPassword) {
-  alert("Passwords do not match. Please try again.");
-  return;
-}
+    if (password !== confirmPassword) {
+      alert("Passwords do not match. Please try again.");
+      return;
+    }
 
+    console.log("User Registered:", { fullName, email, password, userType });
 
-console.log("User Registered:", { fullName, email, password });
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+    localStorage.setItem("userType", userType); // Save the user type
 
+    alert("Signup Successful! Redirecting to the login page...");
 
-localStorage.setItem("userEmail", email);
-localStorage.setItem("userPassword", password);
-
-alert("Signup Successful! Redirecting to the login page...");
-
-
-navigate("/login"); 
+    navigate("/login");
   };
 
   return (
@@ -78,6 +77,16 @@ navigate("/login");
             placeholder="xxxxxx"
             required
           />
+        </div>
+        <div>
+          <label>User Type:</label>
+          <select
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
         <div>
           <input

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
+import { Link } from 'react-router-dom'; 
 
 function LandingPage() {
     return (
@@ -44,7 +44,7 @@ const styles = {
         backgroundImage: 'url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHdlYiUyMGRldmVsb3BtZW50JTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        // filter: 'blur(8px)', // Apply blur effect to the background
+        
         zIndex: 1,
         overflow: 'hidden',
     },
@@ -54,7 +54,7 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay for better readability
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
         zIndex: 2,
         color: 'white',
         textAlign: 'center',
