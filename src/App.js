@@ -14,6 +14,9 @@ import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString()
+  );
 
   useEffect(() => {
     const userEmail = localStorage.getItem("userEmail");
@@ -42,13 +45,25 @@ function App() {
                 </Link>
               </div>
 
+              {/* Current Time Display */}
+              <div className="text-xl font-bold">{currentTime}</div>
+
               <div className="flex space-x-4">
                 {isAuthenticated ? (
                   <>
                     <Link to="/" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Home
                     </Link>
-                    <Link to="/fundraiser" className="px-3 py-2 rounded-md hover:bg-blue-700">
+                    <Link
+                      to="/posts"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Posts
+                    </Link>
+                    <Link
+                      to="/fundraiser"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
                       Fundraiser
                     </Link>
                     <Link to="/profile" className="px-3 py-2 rounded-md hover:bg-blue-700">
@@ -57,7 +72,22 @@ function App() {
                     <Link to="/settings" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Settings
                     </Link>
-                    <button onClick={handleLogout} className="px-3 py-2 rounded-md hover:bg-blue-700">
+                    <Link
+                      to="/notifications"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Notifications
+                    </Link>
+                    <Link
+                      to="/search"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Search
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
                       Logout
                     </button>
                   </>
@@ -81,6 +111,21 @@ function App() {
           <Routes>
             <Route path="/" element={isAuthenticated ? <HomePage /> : <LandingPage />} />
             <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+            <Route
+              path="/payment"
+              element={
+                isAuthenticated ? <PaymentPage /> : <Navigate to="/login" />
+              }
+            />
+
+            <Route
+              path="/"
+              element={isAuthenticated ? <HomePage /> : <LandingPage />}
+            />
+            <Route
+              path="/login"
+              element={<Login setIsAuthenticated={setIsAuthenticated} />}
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/fundraiser" element={isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />} />
             <Route path="/create" element={isAuthenticated ? <CreateFundraiser /> : <Navigate to="/login" />} />
@@ -91,13 +136,74 @@ function App() {
         </main>
 
         {/* Footer */}
-        <footer className="bg-gray-800 text-white">
-          <div className="container mx-auto px-4 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Footer content */}
-            </div>
-          </div>
-        </footer>
+<footer className="bg-blue-600 text-white py-4">
+  <div className="container mx-auto text-center">
+    &copy; {new Date().getFullYear()} Moringa Alumni Platform. All rights reserved.
+  </div>
+</footer>
+
+<footer className="bg-gray-800 text-white">
+  <div className="container mx-auto px-4 py-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div>
+        <h3 className="font-semibold text-lg mb-4">About</h3>
+        <ul>
+          <li>
+            <Link to="/about" className="block py-1 hover:text-gray-400">
+              About Us
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact-us" className="block py-1 hover:text-gray-400">
+              Contact Us
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="font-semibold text-lg mb-4">Policies</h3>
+        <ul>
+          <li>
+            <Link to="/privacy-policy" className="block py-1 hover:text-gray-400">
+              Privacy Policy
+            </Link>
+          </li>
+          <li>
+            <Link to="/cookie-policy" className="block py-1 hover:text-gray-400">
+              Cookie Policy
+            </Link>
+          </li>
+          <li>
+            <Link to="/terms-of-service" className="block py-1 hover:text-gray-400">
+              Terms of Service
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="font-semibold text-lg mb-4">Support</h3>
+        <ul>
+          <li>
+            <Link to="/user-agreement" className="block py-1 hover:text-gray-400">
+              User Agreement
+            </Link>
+          </li>
+          <li>
+            <Link to="/copyright-policy" className="block py-1 hover:text-gray-400">
+              Copyright Policy
+            </Link>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+
+     
       </div>
     </Router>
   );
