@@ -1,42 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./components/LandingPage";
-import Forum from "./components/Forum";
-import PostPage from "./pages/PostPage";
-import ForgotPassword from "./pages/ForgotPassword";
-import TermsPage from "./pages/TermsPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
-import AboutPage from "./pages/AboutPage";
 import HomePage from "./pages/HomePage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import ContactUs from "./pages/ContactUs";
-import CookiePolicy from "./pages/CookiePolicy";
-import CopyrightPolicy from "./pages/CopyrightPolicy";
-import UserAgreement from "./pages/UserAgreement";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import CohortList from "./components/CohortList";
-import AddCohort from "./components/AddCohort";
-import CohortDetails from "./components/CohortDetails";
-import Settings from "./components/Settings";
-import ProfilePage from "./features/profile/ProfilePage";
-import PaymentPlans from "./components/PaymentPlans";
 import Fundraiser from "./pages/Fundraiser"; 
-import PaymentDetails from "./pages/PaymentDetails"; 
-import SelectPlanPage from "./pages/SelectPlanPage"; 
-import PaymentPage from "./pages/PaymentPage"; 
+import CreateFundraiser from './components/FundraiserCreated';
+import ProfilePage from "./features/profile/ProfilePage";
+import Settings from "./components/Settings";
 import "./App.css";
 
 function App() {
-  const [cohorts, setCohorts] = useState([]);
-  const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -46,54 +22,6 @@ function App() {
       setIsAuthenticated(true);
     }
   }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/cohorts")
-      .then((response) => setCohorts(response.data))
-      .catch((error) => console.error("Error fetching cohorts:", error));
-  }, []);
-
-  const addCohort = async (name) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/cohorts/create",
-        { name }
-      );
-      setCohorts([...cohorts, response.data]);
-    } catch (error) {
-      console.error("Error adding cohort:", error);
-    }
-  };
-
-  const removeCohort = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/cohorts/${id}`);
-      setCohorts(cohorts.filter((cohort) => cohort.id !== id));
-    } catch (error) {
-      console.error("Error removing cohort:", error);
-    }
-  };
-
-  const addMember = async (cohortId, memberName) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5000/api/cohorts/${cohortId}/addMember`,
-        { name: memberName }
-      );
-      setCohorts(
-        cohorts.map((cohort) =>
-          cohort.id === cohortId ? response.data : cohort
-        )
-      );
-    } catch (error) {
-      console.error("Error adding member:", error);
-    }
-  };
-
-  const togglePrivacyTerms = () => {
-    setShowPrivacyTerms(!showPrivacyTerms);
-  };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -117,67 +45,28 @@ function App() {
               <div className="flex space-x-4">
                 {isAuthenticated ? (
                   <>
-                    <Link
-                      to="/"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Home
                     </Link>
-                    {/* <Link
-                      to="/forum"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
-                      Forum
-                    </Link> */}
-                    <Link
-                      to="/posts"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
-                      Posts
-                    </Link>
-                    <Link
-                      to="/fundraiser"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/fundraiser" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Fundraiser
                     </Link>
-                    <Link
-                      to="/add-cohort"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
-                      Add Cohort
-                    </Link>
-                    <Link
-                      to="/profile"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/profile" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Profile
                     </Link>
-                    <Link
-                      to="/settings"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/settings" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Settings
                     </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <button onClick={handleLogout} className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Logout
                     </button>
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/login"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/login" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Login
                     </Link>
-                    <Link
-                      to="/register"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/register" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Register
                     </Link>
                   </>
@@ -190,89 +79,14 @@ function App() {
         {/* Main Content */}
         <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>
-            <Route
-              path="/"
-              element={isAuthenticated ? <HomePage /> : <LandingPage />}
-            />
-            <Route
-              path="/login"
-              element={<Login setIsAuthenticated={setIsAuthenticated} />}
-            />
+            <Route path="/" element={isAuthenticated ? <HomePage /> : <LandingPage />} />
+            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
             <Route path="/register" element={<Register />} />
-            {/* <Route
-              path="/forum"
-              element={isAuthenticated ? <Forum /> : <Navigate to="/login" />}
-            /> */}
-            <Route
-              path="/posts"
-              element={
-                isAuthenticated ? <PostPage /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                isAuthenticated ? <Settings /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/fundraiser"
-              element={
-                isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />
-              }
-            />
-            <Route path="/payment-plans" element={<PaymentPlans />} />
-            <Route path="/select-plan/:planId" element={<SelectPlanPage />} />
-            <Route path="/payment-page" element={<PaymentPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/payment-plans" element={<PaymentPlans />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/copyright-policy" element={<CopyrightPolicy />} />
-            <Route path="/user-agreement" element={<UserAgreement />} />
-            <Route path="/post/:id" element={<PostPage />} />
-            <Route path="/" element={<Forum />} />
-            <Route path="/donate/:fundraiserId" element={<PaymentDetails />} />
-            <Route
-              path="/cohorts"
-              element={
-                isAuthenticated ? (
-                  <CohortList cohorts={cohorts} onRemoveCohort={removeCohort} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/add-cohort"
-              element={
-                isAuthenticated ? (
-                  <AddCohort onAddCohort={addCohort} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/cohort/:id"
-              element={
-                isAuthenticated ? (
-                  <CohortDetails cohorts={cohorts} onAddMember={addMember} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
+            <Route path="/fundraiser" element={isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />} />
+            <Route path="/create" element={isAuthenticated ? <CreateFundraiser /> : <Navigate to="/login" />} />
+            <Route path="/fundraisercreated" element={isAuthenticated ? <CreateFundraiser /> : <Navigate to="/login" />} />
+            <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+            <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           </Routes>
         </main>
 
@@ -280,77 +94,7 @@ function App() {
         <footer className="bg-gray-800 text-white">
           <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="font-semibold text-lg mb-4">About</h3>
-                <ul>
-                  <li>
-                    <Link
-                      to="/about"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/contact-us"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg mb-4">Policies</h3>
-                <ul>
-                  <li>
-                    <Link
-                      to="/privacy-policy"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/cookie-policy"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      Cookie Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/terms-of-service"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      Terms of Service
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg mb-4">Support</h3>
-                <ul>
-                  <li>
-                    <Link
-                      to="/user-agreement"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      User Agreement
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/copyright-policy"
-                      className="block py-1 hover:text-gray-400"
-                    >
-                      Copyright Policy
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              {/* Footer content */}
             </div>
           </div>
         </footer>
