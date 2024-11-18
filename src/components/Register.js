@@ -27,7 +27,7 @@ const Signup = () => {
 
     localStorage.setItem("userEmail", email);
     localStorage.setItem("userPassword", password);
-    localStorage.setItem("userType", userType); // Save the user type
+    localStorage.setItem("userType", userType); 
 
     alert("Signup Successful! Redirecting to the login page...");
 
