@@ -1,185 +1,283 @@
-import React, { useEffect, useState } from 'react';
-import '../App.css'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "../App.css";
 
 function Settings() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const [languages, setLanguages] = useState('English');
-    const [communication, setCommunication] = useState('Email');
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [communication, setCommunication] = useState("Email");
+  const [receiveNotifications, setReceiveNotifications] = useState(true);
+  const [notificationFrequency, setNotificationFrequency] =
+    useState("Immediate");
+  const [notificationPriority, setNotificationPriority] = useState("High");
+  const [isPremium, setIsPremium] = useState(false);
+  const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false); // State for 2FA
+  const [phoneNumber, setPhoneNumber] = useState(""); // State for phone number input
+  const [isPhoneNumberSubmitted, setIsPhoneNumberSubmitted] = useState(false); // State to track phone number submission
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString()
+  ); 
 
-    // Notification preferences
-    const [receiveNotifications, setReceiveNotifications] = useState(true);
-    const [notificationPreference, setNotificationPreference] = useState('follow');
-    const [notifications, setNotifications] = useState([
-        { id: 1, message: 'John Doe liked your post', timestamp: new Date() },
-        { id: 2, message: 'Jane Smith started following you', timestamp: new Date() },
-        { id: 3, message: 'Your post was shared by Mike', timestamp: new Date() },
-    ]);
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? "light" : "dark";
+    setIsDarkMode(!isDarkMode);
+    document.body.className = newTheme;
+    localStorage.setItem("theme", newTheme);
+  };
 
-    const toggleTheme = () => {
-        const newTheme = isDarkMode ? 'light' : 'dark';
-        setIsDarkMode(!isDarkMode);
-        document.body.className = newTheme;
-        localStorage.setItem('theme', newTheme);
-    };
+  const handleCommunicationChange = (event) => {
+    setCommunication(event.target.value);
+    localStorage.setItem("communication", event.target.value);
+  };
 
-    const handleLanguageChange = (event) => {
-        setLanguages(event.target.value);
-        localStorage.setItem('language', event.target.value);
-    };
+  const handleNotificationChange = (event) => {
+    const { name, checked } = event.target;
+    if (name === "receiveNotifications") {
+      setReceiveNotifications(checked);
+    }
+  };
 
-    const handleCommunicationChange = (event) => {
-        setCommunication(event.target.value);
-        localStorage.setItem('communication', event.target.value);
-    };
+  const handleNotificationFrequencyChange = (event) => {
+    setNotificationFrequency(event.target.value);
+  };
 
-    const handleNotificationChange = (event) => {
-        const { name, checked } = event.target;
-        if (name === 'receiveNotifications') {
-            setReceiveNotifications(checked);
-        }
-    };
+  const handleNotificationPriorityChange = (event) => {
+    setNotificationPriority(event.target.value);
+  };
 
-    const handleNotificationPreferenceChange = (event) => {
-        setNotificationPreference(event.target.value);
-    };
+  const handleUpgradeToPremium = () => {
+    setIsPremium(true);
+    alert("You've upgraded to Premium!");
+  };
 
-    const handleLogout = () => {
-        alert('Logged out');
-    };
+  const handleLogout = () => {
+    alert("Logged out");
+  };
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        const savedLanguage = localStorage.getItem('language');
-        const savedCommunication = localStorage.getItem('communication');
+  const handleTwoFactorToggle = () => {
+    setIsTwoFactorEnabled(!isTwoFactorEnabled); 
+  };
 
-        if (savedTheme) setIsDarkMode(savedTheme === 'dark');
-        if (savedLanguage) setLanguages(savedLanguage);
-        if (savedCommunication) setCommunication(savedCommunication);
-        document.body.className = isDarkMode ? 'dark' : 'light';
-    }, [isDarkMode]);
+  const handlePhoneNumberChange = (event) => {
+    setPhoneNumber(event.target.value);
+  };
 
-    return (
-        <div className="relative">
-            <button 
-                onClick={toggleDropdown} 
-                className="settings-button"
-            >
-                ⚙️
-            </button>
-            
-            {isOpen && (
-                <div className="settings-dropdown">
-                    <div className="settings-content">
-                        <h3 className="settings-title">Settings</h3>
-                        
-                        <div className="setting-section">
-                            <h4 className="setting-title">Theme</h4>
-                            <label className="setting-option">
-                                <input
-                                    type="checkbox"
-                                    checked={isDarkMode}
-                                    onChange={toggleTheme}
-                                    className="form-checkbox"
-                                />
-                                <span>Dark Mode</span>
-                            </label>
-                        </div>
+  const handlePhoneNumberSubmit = () => {
+    setIsPhoneNumberSubmitted(true); 
+  };
 
-                        <div className="setting-section">
-                            <h4 className="setting-title">Language</h4>
-                            <select 
-                                value={languages} 
-                                onChange={handleLanguageChange}
-                                className="setting-select"
-                            >
-                                <option value="English">English</option>
-                                <option value="Spanish">Spanish</option>
-                                <option value="French">French</option>
-                            </select>
-                        </div>
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
 
-                        <div className="setting-section">
-                            <h4 className="setting-title">Communication Preference</h4>
-                            <select 
-                                value={communication} 
-                                onChange={handleCommunicationChange}
-                                className="setting-select"
-                            >
-                                <option value="Email">Email</option>
-                                <option value="SMS">SMS</option>
-                                <option value="Phone">Phone</option>
-                            </select>
-                        </div>
+    
+    return () => clearInterval(interval);
+  }, []);
 
-                        <div className="setting-section">
-                            <h4 className="setting -title">Notification Preferences</h4>
-                            <label className="setting-option">
-                                <input
-                                    type="checkbox"
-                                    name="receiveNotifications"
-                                    checked={receiveNotifications}
-                                    onChange={handleNotificationChange}
-                                    className="form-checkbox"
-                                />
-                                <span>Receive Notifications</span>
-                            </label>
-                            {receiveNotifications && (
-                                <div className="notification-preferences">
-                                    <label className="setting-option">
-                                        <input
-                                            type="radio"
-                                            value="follow"
-                                            checked={notificationPreference === 'follow'}
-                                            onChange={handleNotificationPreferenceChange}
-                                            className="form-radio"
-                                        />
-                                        <span>From People I Follow</span>
-                                    </label>
-                                    <label className="setting-option">
-                                        <input
-                                            type="radio"
-                                            value="anyone"
-                                            checked={notificationPreference === 'anyone'}
-                                            onChange={handleNotificationPreferenceChange}
-                                            className="form-radio"
-                                        />
-                                        <span>From Anyone</span>
-                                    </label>
-                                </div>
-                            )}
-                        </div>
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const savedCommunication = localStorage.getItem("communication");
 
-                        {/* Notifications Display */}
-                        <div className="setting-section">
-                            <h4 className="setting-title">Notifications</h4>
-                            <div className="notifications-box">
-                                {notifications.map((notification) => (
-                                    <div key={notification.id} className="notification-item">
-                                        {notification.message}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+    if (savedTheme) setIsDarkMode(savedTheme === "dark");
+    if (savedCommunication) setCommunication(savedCommunication);
 
-                        {/* Logout Button */}
-                        <button
-                            onClick={handleLogout}
-                            className="logout-button"
-                        >
-                            Logout
-                        </button>
-                    </div>
+    document.body.className = isDarkMode ? "dark" : "light";
+  }, [isDarkMode]);
+
+  return (
+    <div className="relative">
+      {/* Display Current Time at the top of the settings page */}
+      <div className="current-time">
+        <p>{currentTime}</p>
+      </div>
+
+      <button onClick={toggleDropdown} className="settings-button">
+        ⚙️
+      </button>
+
+      {isOpen && (
+        <div className="settings-dropdown">
+          <div className="settings-content">
+            <h3 className="settings-title">Settings</h3>
+            <div className="setting-section">
+              <h4 className="setting-title">Theme</h4>
+              <label className="setting-option">
+                <input
+                  type="checkbox"
+                  checked={isDarkMode}
+                  onChange={toggleTheme}
+                  className="form-checkbox"
+                />
+                <span>Dark Mode</span>
+              </label>
+            </div>
+            {/* Language is fixed to English */}
+            <div className="setting-section">
+              <h4 className="setting-title">Language</h4>
+              <p>English</p>
+            </div>
+            <div className="setting-section">
+              <h4 className="setting-title">Communication Preference</h4>
+              <select
+                value={communication}
+                onChange={handleCommunicationChange}
+                className="setting-select"
+              >
+                <option value="Email">Email</option>
+                <option value="SMS">SMS</option>
+              </select>
+              {/* Conditional input for phone number based on communication preference */}
+              {communication === "SMS" && !isPhoneNumberSubmitted && (
+                <div className="phone-number-input">
+                  <label className="setting-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter your phone number"
+                    className="phone-input"
+                  />
+                  <button
+                    onClick={handlePhoneNumberSubmit}
+                    className="submit-button"
+                  >
+                    Submit
+                  </button>
                 </div>
-            )}
+              )}
+            </div>
+            <div className="setting-section">
+              <h4 className="setting-title">Notification Preferences</h4>
+              <label className="setting-option">
+                <input
+                  type="checkbox"
+                  name="receiveNotifications"
+                  checked={receiveNotifications}
+                  onChange={handleNotificationChange}
+                  className="form-checkbox"
+                />
+                <span>Receive Notifications</span>
+              </label>
+              {receiveNotifications && (
+                <div className="notification-preferences">
+                  <div className="setting-section">
+                    <h4 className="setting-title">Notification Frequency</h4>
+                    <select
+                      value={notificationFrequency}
+                      onChange={handleNotificationFrequencyChange}
+                      className="setting-select"
+                    >
+                      <option value="Immediate">Immediate</option>
+                      <option value="Daily">Daily</option>
+                      <option value="Weekly">Weekly</option>
+                    </select>
+                    <p>
+                      <strong>About:</strong> Choose how frequently you would
+                      like to receive notifications. "Immediate" will send you
+                      notifications as soon as they occur, "Daily" will send you
+                      a summary of all notifications once a day, and "Weekly"
+                      will send you a summary at the end of each week.
+                    </p>
+                  </div>
+                  <div className="setting-section">
+                    <h4 className="setting-title">Notification Priority</h4>
+                    <select
+                      value={notificationPriority}
+                      onChange={handleNotificationPriorityChange}
+                      className="setting-select"
+                    >
+                      <option value="High">High</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                    </select>
+                    <p>
+                      <strong>About:</strong> Choose the priority of the
+                      notifications you want to receive. "High" notifications
+                      are the most important and will be highlighted, "Medium"
+                      will include regular notifications, and "Low" will include
+                      less urgent notifications.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+            {/* Upgrade to Premium Section */}
+            {" "}
+            <div className="setting-section">
+              {" "}
+              <h4 className="setting-title">Upgrade to Premium</h4>
+            {" "}
+              <Link to="/payment-plans">
+                {" "}
+                <button className="upgrade-button">Upgrade Now</button>
+                {" "}
+              </Link>{" "}
+              {isPremium && <p>You are a Premium member now!</p>}
+            {" "}
+            </div>
+            {/* Two-Factor Authentication Section */}
+            <div className="setting-section">
+              <h4 className="setting-title">Privacy Settings</h4>
+              <label className="setting-option">
+                <input
+                  type="checkbox"
+                  checked={isTwoFactorEnabled}
+                  onChange={handleTwoFactorToggle}
+                  className="form-checkbox"
+                />
+                <span>Enable Two-Factor Authentication (2FA)</span>
+              </label>
+              {isTwoFactorEnabled && (
+                <div className="two-factor-info">
+                  <p>
+                    <strong>Two-Factor Authentication (2FA)</strong> adds an
+                    extra layer of security to your account. Once enabled, you
+                    will be required to verify your identity using a mobile
+                    application (e.g., Google Authenticator or Authy) before
+                    accessing your account.
+                  </p>
+                  <h5>Steps to Set Up 2FA:</h5>
+                  <ol>
+                    <li>
+                      Download a 2FA app like Google Authenticator or Authy on
+                      your mobile device.
+                    </li>
+                    <li>
+                      Open the app and scan the QR code provided below to link
+                      it with your account.
+                    </li>
+                    <li>
+                      After linking, enter the verification code provided by the
+                      app to complete the setup.
+                    </li>
+                  </ol>
+                  <p>
+                    Notification frequency is set to: {notificationFrequency}.
+                  </p>
+                  <p>
+                    Priority for notifications is set to: {notificationPriority}
+                    .
+                  </p>
+                </div>
+              )}
+            </div>
+            {/* Logout Button */}
+            <div className="setting-section">
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default Settings;
