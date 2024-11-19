@@ -10,6 +10,9 @@ import Fundraiser from "./pages/Fundraiser";
 import CreateFundraiser from './components/FundraiserCreated';
 import ProfilePage from "./features/profile/ProfilePage";
 import Settings from "./components/Settings";
+import PaymentPage from "./pages/PaymentPage";
+
+
 import "./App.css";
 
 function App() {

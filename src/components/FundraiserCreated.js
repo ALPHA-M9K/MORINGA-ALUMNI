@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // For generating unique IDs
+import './CreateFundraiser.css';
+
 
 const CreateFundraiser = ({ addFundraiser }) => {
   const navigate = useNavigate();
