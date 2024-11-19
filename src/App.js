@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -9,8 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./components/LandingPage";
-import Forum from "./pages/Forum";
-import PostsPage from "./pages/PostsPage";
+import Forum from "./components/Forum";
+import PostPage from "./pages/PostPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import TermsPage from "./pages/TermsPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
@@ -26,15 +25,26 @@ import Register from "./components/Register";
 import CohortList from "./components/CohortList";
 import AddCohort from "./components/AddCohort";
 import CohortDetails from "./components/CohortDetails";
+import Settings from "./components/Settings";
+import ProfilePage from "./features/profile/ProfilePage";
+import PaymentPlans from "./components/PaymentPlans";
+import Fundraiser from "./pages/Fundraiser";
+import PaymentDetails from "./pages/PaymentDetails";
+import SelectPlanPage from "./pages/SelectPlanPage";
+import PaymentPage from "./pages/PaymentPage";
+import Notifications from "./components/Notifications";
+import Search from "./components/Search";
 import "./App.css";
 
 function App() {
   const [cohorts, setCohorts] = useState([]);
   const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString()
+  );
 
   useEffect(() => {
-    
     const userEmail = localStorage.getItem("userEmail");
     const userPassword = localStorage.getItem("userPassword");
     if (userEmail && userPassword) {
@@ -47,6 +57,15 @@ function App() {
       .get("http://localhost:5000/api/cohorts")
       .then((response) => setCohorts(response.data))
       .catch((error) => console.error("Error fetching cohorts:", error));
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+
+    
+    return () => clearInterval(interval);
   }, []);
 
   const addCohort = async (name) => {
@@ -109,6 +128,9 @@ function App() {
                 </Link>
               </div>
 
+              {/* Current Time Display */}
+              <div className="text-xl font-bold">{currentTime}</div>
+
               <div className="flex space-x-4">
                 {isAuthenticated ? (
                   <>
@@ -119,22 +141,46 @@ function App() {
                       Home
                     </Link>
                     <Link
-                      to="/forum"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
-                      Forum
-                    </Link>
-                    <Link
                       to="/posts"
                       className="px-3 py-2 rounded-md hover:bg-blue-700"
                     >
                       Posts
                     </Link>
                     <Link
+                      to="/fundraiser"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Fundraiser
+                    </Link>
+                    <Link
                       to="/add-cohort"
                       className="px-3 py-2 rounded-md hover:bg-blue-700"
                     >
                       Add Cohort
+                    </Link>
+                    <Link
+                      to="/profile"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Settings
+                    </Link>
+                    <Link
+                      to="/notifications"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Notifications
+                    </Link>
+                    <Link
+                      to="/search"
+                      className="px-3 py-2 rounded-md hover:bg-blue-700"
+                    >
+                      Search
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -168,6 +214,13 @@ function App() {
         <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>
             <Route
+              path="/payment"
+              element={
+                isAuthenticated ? <PaymentPage /> : <Navigate to="/login" />
+              }
+            />
+
+            <Route
               path="/"
               element={isAuthenticated ? <HomePage /> : <LandingPage />}
             />
@@ -177,24 +230,17 @@ function App() {
             />
             <Route path="/register" element={<Register />} />
             <Route
-              path="/forum"
-              element={isAuthenticated ? <Forum /> : <Navigate to="/login" />}
-            />
-            <Route
               path="/posts"
               element={
-                isAuthenticated ? <PostsPage /> : <Navigate to="/login" />
+                isAuthenticated ? <PostPage /> : <Navigate to="/login" />
               }
             />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/copyright-policy" element={<CopyrightPolicy />} />
-            <Route path="/user-agreement" element={<UserAgreement />} />
+            <Route
+              path="/settings"
+              element={
+                isAuthenticated ? <Settings /> : <Navigate to="/login" />
+              }
+            />
             <Route
               path="/cohorts"
               element={
@@ -225,95 +271,108 @@ function App() {
                 )
               }
             />
+            <Route
+              path="/profile"
+              element={
+                isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/fundraiser"
+              element={
+                isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />
+              }
+            />
+
+            {/* Other routes */}
+            <Route path="/forum" element={<Forum />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/copyright-policy" element={<CopyrightPolicy />} />
+            <Route path="/user-agreement" element={<UserAgreement />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/donate/:fundraiserId" element={<PaymentDetails />} />
+            <Route path="/payment-plans" element={<PaymentPlans />} />
+            <Route path="/select-plan/:planId" element={<SelectPlanPage />} />
+            <Route path="/payment-page" element={<PaymentPage />} />
           </Routes>
         </main>
 
         {/* Footer */}
-        <footer className="bg-gray-800 text-white">
-          <div className="container mx-auto px-4 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">About Us</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link to="/about" className="hover:text-blue-400">
-                      About
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+<footer className="bg-blue-600 text-white py-4">
+  <div className="container mx-auto text-center">
+    &copy; {new Date().getFullYear()} Moringa Alumni Platform. All rights reserved.
+  </div>
+</footer>
 
-              <div>
-                <h3
-                  className="text-lg font-semibold mb-4 cursor-pointer"
-                  onClick={togglePrivacyTerms}
-                >
-                  Privacy & Terms
-                </h3>
-                {showPrivacyTerms && (
-                  <ul className="space-y-2 pl-4">
-                    <li>
-                      <Link
-                        to="/privacy-policy"
-                        className="block hover:text-blue-400"
-                      >
-                        Privacy Policy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/cookie-policy"
-                        className="block hover:text-blue-400"
-                      >
-                        Cookie Policy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/copyright-policy"
-                        className="block hover:text-blue-400"
-                      >
-                        Copyright Policy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/user-agreement"
-                        className="block hover:text-blue-400"
-                      >
-                        User Agreement
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/terms-of-service"
-                        className="block hover:text-blue-400"
-                      >
-                        Terms of Service
-                      </Link>
-                    </li>
-                  </ul>
-                )}
-              </div>
+<footer className="bg-gray-800 text-white">
+  <div className="container mx-auto px-4 py-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div>
+        <h3 className="font-semibold text-lg mb-4">About</h3>
+        <ul>
+          <li>
+            <Link to="/about" className="block py-1 hover:text-gray-400">
+              About Us
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact-us" className="block py-1 hover:text-gray-400">
+              Contact Us
+            </Link>
+          </li>
+        </ul>
+      </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Contact</h3>
-                <p>Email: support@moringaalumni.com</p>
-                <p>Phone: 0734567891</p>
-                <Link to="/contact-us" className="block hover:text-blue-400">
-                  Contact Us
-                </Link>
-              </div>
-            </div>
+      <div>
+        <h3 className="font-semibold text-lg mb-4">Policies</h3>
+        <ul>
+          <li>
+            <Link to="/privacy-policy" className="block py-1 hover:text-gray-400">
+              Privacy Policy
+            </Link>
+          </li>
+          <li>
+            <Link to="/cookie-policy" className="block py-1 hover:text-gray-400">
+              Cookie Policy
+            </Link>
+          </li>
+          <li>
+            <Link to="/terms-of-service" className="block py-1 hover:text-gray-400">
+              Terms of Service
+            </Link>
+          </li>
+        </ul>
+      </div>
 
-            <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-              <p>
-                &copy; {new Date().getFullYear()} Moringa Alumni Platform. All
-                rights reserved.
-              </p>
-            </div>
-          </div>
-        </footer>
+      <div>
+        <h3 className="font-semibold text-lg mb-4">Support</h3>
+        <ul>
+          <li>
+            <Link to="/user-agreement" className="block py-1 hover:text-gray-400">
+              User Agreement
+            </Link>
+          </li>
+          <li>
+            <Link to="/copyright-policy" className="block py-1 hover:text-gray-400">
+              Copyright Policy
+            </Link>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+
+     
       </div>
     </Router>
   );
