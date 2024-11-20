@@ -250,65 +250,65 @@
 #         db.session.rollback()
 #         return jsonify({"error": str(e)}), 500
 
-from flask import Blueprint, request, jsonify
-from app.models import Cohort
-from app import db
+# from flask import Blueprint, request, jsonify
+# from app.models import Cohort
+# from app import db
 
-cohort_bp = Blueprint('cohort', __name__)
+# cohort_bp = Blueprint('cohort', __name__)
 
-@cohort_bp.route('/create', methods=['POST'])
-def create_cohort():
-    data = request.json
-    new_cohort = Cohort(
-        name=data['name'],
-        is_private=data['isPrivate'],
-        admin=data.get('admin')  # You can set admin here if needed
-    )
+# @cohort_bp.route('/create', methods=['POST'])
+# def create_cohort():
+#     data = request.json
+#     new_cohort = Cohort(
+#         name=data['name'],
+#         is_private=data['isPrivate'],
+#         admin=data.get('admin')  # You can set admin here if needed
+#     )
     
-    db.session.add(new_cohort)
-    db.session.commit()
-    return jsonify(new_cohort.to_dict()), 201
+#     db.session.add(new_cohort)
+#     db.session.commit()
+#     return jsonify(new_cohort.to_dict()), 201
 
-@cohort_bp.route('/join', methods=['POST'])
-def join_cohort():
-    data = request.json
-    cohort_id = data['cohortId']
-    cohort = Cohort.query.get_or_404(cohort_id)
+# @cohort_bp.route('/join', methods=['POST'])
+# def join_cohort():
+#     data = request.json
+#     cohort_id = data['cohortId']
+#     cohort = Cohort.query.get_or_404(cohort_id)
 
-    # Check if the cohort is private
-    if cohort.is_private and cohort.admin is None:
-        return jsonify({'error': 'This cohort is private and has no admin assigned.'}), 403
+#     # Check if the cohort is private
+#     if cohort.is_private and cohort.admin is None:
+#         return jsonify({'error': 'This cohort is private and has no admin assigned.'}), 403
     
-    # Add user to members
-    if request.user:  # Assuming you have a way to get the current user
-        cohort.members.append(request.user)
-    else:
-        return jsonify({'error': 'User  must be logged in to join a cohort.'}), 403
+#     # Add user to members
+#     if request.user:  # Assuming you have a way to get the current user
+#         cohort.members.append(request.user)
+#     else:
+#         return jsonify({'error': 'User  must be logged in to join a cohort.'}), 403
 
-    db.session.commit()
-    return jsonify({'message': 'Successfully joined cohort.'}), 200
+#     db.session.commit()
+#     return jsonify({'message': 'Successfully joined cohort.'}), 200
 
-@cohort_bp.route('/list', methods=['GET'])
-def list_cohorts():
-    cohorts = Cohort.query.all()
-    return jsonify([cohort.to_dict() for cohort in cohorts]), 200
+# @cohort_bp.route('/list', methods=['GET'])
+# def list_cohorts():
+#     cohorts = Cohort.query.all()
+#     return jsonify([cohort.to_dict() for cohort in cohorts]), 200
 
-@cohort_bp.route('/<int:cohort_id>', methods=['GET'])
-def get_cohort(cohort_id):
-    cohort = Cohort.query.get_or_404(cohort_id)
-    return jsonify(cohort.to_dict()), 200
+# @cohort_bp.route('/<int:cohort_id>', methods=['GET'])
+# def get_cohort(cohort_id):
+#     cohort = Cohort.query.get_or_404(cohort_id)
+#     return jsonify(cohort.to_dict()), 200
 
-@cohort_bp.route('/<int:cohort_id>/add_member', methods=['POST'])
-def add_member(cohort_id):
-    cohort = Cohort.query.get_or_404(cohort_id)
-    data = request.json
+# @cohort_bp.route('/<int:cohort_id>/add_member', methods=['POST'])
+# def add_member(cohort_id):
+#     cohort = Cohort.query.get_or_404(cohort_id)
+#     data = request.json
 
-    if cohort.admin != request.user:  # Check if the current user is the admin
-        return jsonify({'error': 'Only the admin can add members.'}), 403
+#     if cohort.admin != request.user:  # Check if the current user is the admin
+#         return jsonify({'error': 'Only the admin can add members.'}), 403
 
-    member_name = data.get('memberName')
-    if member_name and member_name not in cohort.members:
-        cohort.members.append(member_name)
-        db.session.commit()
-        return jsonify({'message': 'Member added successfully.'}), 200
-    return jsonify({'error': 'Invalid member name or already a member.'}), 400
+#     member_name = data.get('memberName')
+#     if member_name and member_name not in cohort.members:
+#         cohort.members.append(member_name)
+#         db.session.commit()
+#         return jsonify({'message': 'Member added successfully.'}), 200
+#     return jsonify({'error': 'Invalid member name or already a member.'}), 400

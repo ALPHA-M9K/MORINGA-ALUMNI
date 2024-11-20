@@ -404,30 +404,41 @@ function AddCohort() {
       return;
     }
 
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/cohort/create',
-        {
-          name: cohortName,
-          isPrivate
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+    if (!currentUser) {
+      setCurrentUser(username);
+    }
 
-      // Refresh cohorts list
-      fetchCohorts();
+    if (cohortName.trim()) {
+      const newCohort = {
+        name: cohortName,
+        isPrivate,
+        admin: isPrivate ? null : currentUser || username, 
+      };
 
-      alert(`Cohort "${cohortName}" created successfully`);
+      onAddCohort(newCohort);
       setCohortName("");
       setIsPrivate(false);
-    } catch (error) {
-      console.error("Cohort creation failed", error);
-      alert(error.response?.data?.error || "Failed to create cohort");
+
+      if (isPrivate) {
+        alert(
+          `Private cohort "${cohortName}" created! Please assign an admin.`
+        );
+      } else {
+        alert(`Cohort "${cohortName}" created!`);
+      }
+    } else {
+      alert("Cohort name cannot be empty");
+    }
+  };
+
+  const handleAssignAdmin = (cohortId) => {
+    const cohort = cohorts.find((c) => c.id === cohortId);
+    if (cohort && selectedAdmin) {
+      cohort.admin = selectedAdmin; 
+      alert(`Admin ${selectedAdmin} assigned to ${cohort.name}`);
+      setSelectedAdmin("");
+    } else {
+      alert("Please select a valid admin");
     }
   };
 const handleJoinCohort = async (e) => {

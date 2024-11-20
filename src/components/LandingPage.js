@@ -85,32 +85,32 @@
 // export default LandingPage;
 // LandingPage Component
 import React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
-    return (
-        <div style={styles.container}>
-            <div style={styles.overlay}>
-                <header style={styles.header}>
-                    <h1>Welcome to Moringa Alumni Platform</h1>
-                    <p>Connect, Share, Grow! Join the vibrant Moringa alumni community.</p>
-                </header>
+  return (
+    <div style={styles.container}>
+      <div style={styles.overlay}>
+        <header style={styles.header}>
+          <h1>Welcome to Moringa Alumni Platform</h1>
+          <p>Connect, Share, Grow! Join the vibrant Moringa alumni community.</p>
+        </header>
 
-                <section style={styles.features}>
-                    <h2>What We Offer</h2>
-                    <div style={styles.featureItem}>
-                        <h3>Success Stories</h3>
-                        <p>Share your journey and inspire others in the Moringa community.</p>
-                    </div>
-                    <div style={styles.featureItem}>
-                        <h3>Fundraisers</h3>
-                        <p>Start or contribute to fundraisers for great causes within the community.</p>
-                    </div>
-                    <div style={styles.featureItem}>
-                        <h3>Mentorship & Co-founders</h3>
-                        <p>Find mentors or co-founders for your next project.</p>
-                    </div>
-                </section>
+        <section style={styles.features}>
+          <h2>What We Offer</h2>
+          <div style={styles.featureItem}>
+            <h3>Success Stories</h3>
+            <p>Share your journey and inspire others in the Moringa community.</p>
+          </div>
+          <div style={styles.featureItem}>
+            <h3>Fundraisers</h3>
+            <p>Start or contribute to fundraisers for great causes within the community.</p>
+          </div>
+          <div style={styles.featureItem}>
+            <h3>Mentorship & Co-founders</h3>
+            <p>Find mentors or co-founders for your next project.</p>
+          </div>
+        </section>
 
                 <section style={styles.cta}>
                     <h2>Join the Community</h2>

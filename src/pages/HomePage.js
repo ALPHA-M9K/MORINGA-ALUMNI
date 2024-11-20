@@ -132,7 +132,7 @@ const HomePage = () => {
   const [message, setMessage] = useState("");
 
   const apiKey = "2825fdb132b948dda60f566dfab8acaf";
-  const pageSize = 5;
+  const pageSize = 16;
 
   useEffect(() => {
     const fetchTechNews = async () => {
