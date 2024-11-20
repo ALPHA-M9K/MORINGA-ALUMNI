@@ -90,11 +90,17 @@ class Cohort(db.Model):
 # Cohort Membership Model
 class CohortMembership(db.Model):
     __tablename__ = 'cohort_memberships'
-
+    
     id = db.Column(db.Integer, primary_key=True)
-    profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
     cohort_id = db.Column(db.Integer, db.ForeignKey('cohorts.id'), nullable=False)
-    joined_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
+
+    cohort = db.relationship('Cohort', backref='memberships')
+    user = db.relationship('User', backref='cohorts')
+
+    def __repr__(self):
+        return f'<CohortMembership cohort_id={self.cohort_id} user_id={self.user_id}>'
+
 
 
 # Fundraisers Model
