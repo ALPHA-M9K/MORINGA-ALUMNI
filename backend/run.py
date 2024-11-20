@@ -148,6 +148,24 @@ class Profile(db.Model):
             'name': self.name
         }
 
+# Notification Model
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+    def to_dict(self):
+        """Convert notification to dictionary"""
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'message': self.message,
+            'created_at': self.created_at
+        }
+
 # Token generation function
 def generate_token(user):
     """Generate JWT token for user"""
@@ -257,6 +275,15 @@ def register():
             'details': str(e)
         }), 500
 
+@app.route('/notifications/<int:user_id>', methods=['GET'])
+def get_notifications(user_id):
+    """Retrieve all notifications for a specific user."""
+    notifications = Notification.query.filter_by(user_id=user_id).all()
+    if not notifications:
+        return jsonify([]), 200  # Return an empty list if no notifications found
+    
+    return jsonify([notification.to_dict() for notification in notifications]), 200
+
 # Seed initial admin user
 def create_admin_user():
     with app.app_context():
@@ -293,4 +320,4 @@ if __name__ == '__main__':
         # Create admin user if not exists
         create_admin_user()
     
-    app. run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

@@ -1,27 +1,65 @@
-from flask import Blueprint, jsonify
-from Services.notification_service import NotificationService,Notification
-from routes import app
+from flask import Flask, request, jsonify
+from model import db
+from Services.notification_service import NotificationService
 
-# Initialize Blueprint for notifications
-notification_bp = Blueprint('notification_bp', __name__)
+app = Flask(__name__)
 
-# Route to get all notifications for a user
-@notification_bp.route('/notifications/<int:user_id>', methods=['GET'])
+@app.route('/notifications', methods=['POST'])
+def create_notification():
+    """
+    Endpoint to create a notification for a user.
+    Request Body:
+    {
+        "user_id": int,
+        "message": str
+    }
+    """
+    data = request.get_json()
+    user_id = data.get('user_id')
+    message = data.get('message')
+
+    if not user_id or not message:
+        return jsonify({"error": "user_id and message are required"}), 400
+
+    try:
+        NotificationService.create_notification(user_id, message)
+        return jsonify({"message": "Notification created successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/notifications/<int:user_id>', methods=['GET'])
 def get_notifications(user_id):
-    notifications = NotificationService.get_user_notifications(user_id)
-    return jsonify([{
-        'id': n.id,
-        'message': n.message,
-        'created_at': n.created_at,
-        'is_read': n.is_read
-    } for n in notifications])
+    """
+    Endpoint to retrieve notifications for a specific user.
+    URL Parameter:
+    - user_id (int): The ID of the user.
 
-# Route to mark notification as read
-@notification_bp.route('/notifications/mark_read/<int:notification_id>', methods=['POST'])
-def mark_as_read(notification_id):
-    notification = Notification.query.get(notification_id)
-    if notification:
-        notification.is_read = True
-        db.session.commit()
-        return jsonify({'message': 'Notification marked as read.'})
-    return jsonify({'error': 'Notification not found.'}), 404
+    Response:
+    [
+        {
+            "id": int,
+            "user_id": int,
+            "message": str,
+            "created_at": str
+        }
+    ]
+    """
+    try:
+        notifications = NotificationService.get_user_notifications(user_id)
+        notifications_list = [
+            {
+                "id": n.id,
+                "user_id": n.user_id,
+                "message": n.message,
+                "created_at": n.created_at.isoformat()
+            }
+            for n in notifications
+        ]
+        return jsonify(notifications_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
