@@ -1,38 +1,1023 @@
-.App {
+
+:root {
+  --primary-color: #0056b3;
+  --secondary-color: #003f88;
+  --accent-color: #00a3e0;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --light-gray: #e9ecef;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin: 2rem 0 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+
+.news-list {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.news-item {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+
+.news-item:hover {
+  transform: translateY(-3px);
+}
+
+.news-item h3 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.news-item a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.news-item a:hover {
+  text-decoration: underline;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.pagination button {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button:hover {
+  background: var(--secondary-color);
+}
+
+.pagination button:disabled {
+  background: var(--light-gray);
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+}
+
+
+.newsletter-section {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.newsletter-section form {
+  display: flex;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 1.5rem auto;
+}
+
+.newsletter-section input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.newsletter-section button {
+  background: var(--accent-color);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.newsletter-section button:hover {
+  background: var(--primary-color);
+}
+
+.newsletter-message {
+  margin-top: 1rem;
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--light-gray);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-links h4,
+.footer-contact h4 {
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-color);
+}
+
+.footer-contact p {
+  margin: 0.5rem 0;
+}
+
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+}
+
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .newsletter-section form {
+    flex-direction: column;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 }
 
-.App-header {
-  background-color: #282c34;
+:root {
+  --primary-color: #0056b3;
+  --secondary-color: #003f88;
+  --accent-color: #00a3e0;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --light-gray: #e9ecef;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+
+header {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+nav li {
+  margin-left: 1.5rem;
+}
+
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+}
+
+
+.news-list {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+
+:root {
+  --primary-color: #0056b3;
+  --secondary-color: #003f88;
+  --accent-color: #00a3e0;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --light-gray: #e9ecef;
+  --white: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+
+header {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+nav li {
+  margin: 0 1.5rem;
+}
+
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+}
+
+
+.news-list {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.settings-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: #f9f9f9;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays above the rest */
+  padding: 20px;
+  overflow-y: auto;
+}
+
+
+
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f4f4f4;
+}
+body.light {
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.relative {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
+}
+
+.settings-dropdown {
+  width: 90%;
+  max-width: 500px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings-title {
+  font-size: 1.8rem;
+  color: #007bff; /* Primary color: Blue */
+  margin-bottom: 10px;
+}
+
+.setting-section {
+  text-align: left;
+}
+
+.setting-title {
+  font-size: 1.2rem;
+  color: #007bff; /* Primary color: Blue */
+  margin-bottom: 5px;
+}
+
+.setting-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-checkbox {
+  accent-color: #007bff; /* Primary color: Blue */
+}
+
+.phone-input,
+.setting-select,
+.submit-button,
+.upgrade-button,
+.logout-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.phone-input:focus,
+.setting-select:focus {
+  border-color: #007bff; /* Primary color: Blue */
+  outline: none;
+}
+
+.submit-button,
+.upgrade-button,
+.logout-button {
+  background-color: #007bff; /* Primary color: Blue */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover,
+.upgrade-button:hover,
+.logout-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button {
+  margin-top: 10px;
+}
+
+.current-time p {
+  font-size: 1.2rem;
+  color: #ff7f50; /* Secondary color: Orange */
+}
+
+.two-factor-info {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.notification-preferences select {
+  width: 100%;
+}
+
+.logout-button {
+  background-color: #ff7f50; /* Secondary color: Orange */
+}
+
+.logout-button:hover {
+  background-color: #cc6600;
+}
+
+
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Auth Container */
+.auth-container {
+  display: flex;
+  flex-direction: column; /* Ensure the content is stacked vertically */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #007bff, #ff5733); /* Blue to Orange Gradient */
+  padding: 20px;
+}
+
+.welcome-message {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px; /* Space between the welcome text and the form */
+}
+
+.welcome-message h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.welcome-message h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.welcome-message p {
+  font-size: 18px;
+  font-weight: lighter;
+}
+
+/* Auth Form */
+.auth-form {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+h2 {
+  text-align: center;
+  color: #007bff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus {
+  border-color: #007bff;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Links */
+a {
+  color: #ff5733;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Remember Me */
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+p {
+  text-align: center;
+}
+
+  /* Home Page */
+.home-page {
+  padding: 40px 20px;
+  background: linear-gradient(to right, #007bff, #ff5733); /* Blue to Orange Gradient */
+  color: white; /* White text to match the gradient */
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+}
+
+/* Headings */
+h1, h2 {
+  color: white; /* White text for consistency with the auth page */
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-top: 30px;
+}
+
+/* News Section */
+.news-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 articles per row */
+  gap: 30px;
+  margin-top: 30px;
+  width: 100%;
+  padding: 0; /* Removed padding for a free-flowing layout */
+}
+
+.news-item {
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #007bff, #ff5733); /* Blue to Orange Gradient for news items */
+  color: white;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-item:hover {
+  transform: translateY(-10px);
+}
+
+.news-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.news-item h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.news-item h3 a {
+  color: white;
+  text-decoration: none;
+}
+
+.news-item h3 a:hover {
+  text-decoration: underline;
+}
+
+.news-item p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.pagination button {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  background-color: #007bff; /* Blue button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.pagination button:disabled {
+  background-color: #666666;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 1.5rem;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Newsletter Section */
+.newsletter-section {
+  background-color: #007bff; /* Blue background for newsletter section */
+  padding: 40px;
+  border-radius: 8px;
+  margin-top: 60px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.newsletter-section h2 {
+  font-size: 2rem;
+  color: #ff5733; /* Orange color for heading */
+  margin-bottom: 20px;
+}
+
+.newsletter-section p {
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 25px;
+}
+
+.newsletter-section form {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.newsletter-section input {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 2px solid #444444;
+  border-radius: 5px;
+  width: 280px;
+  background-color: #333333;
+  color: white;
+}
+
+.newsletter-section button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  background-color: #ff5733; /* Orange button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.newsletter-section button:hover {
+  background-color: #e65c00;
+}
+
+.newsletter-section p {
+  font-size: 1rem;
+  color: white;
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .news-list {
+    grid-template-columns: repeat(3, 1fr); /* 3 articles per row on tablets */
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 768px) {
+  .news-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 articles per row on smaller screens */
   }
+}
+
+@media (max-width: 480px) {
+  .news-list {
+    grid-template-columns: 1fr; /* 1 article per row on mobile screens */
+  }
+}
+
+
+.notifications-page {
+  background-color: #121212; /* Dark background for modern feel */
+  color: #fff; /* White text for readability */
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+}
+
+.notifications-page h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #f4f4f4; /* Slightly lighter color for header */
+  border-bottom: 2px solid #ff7a00; /* Orange border for accent */
+  padding-bottom: 10px;
+}
+
+.notifications-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.notifications-list {
+  flex: 1;
+  padding: 15px;
+  background-color: #1f1f1f; /* Background color for lists */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+}
+
+.notifications-list h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ff7a00; /* Orange header color */
+}
+
+.notification-item {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  transform: translateY(-5px); /* Slightly raise the item on hover */
+}
+
+.notification-item p {
+  margin: 0;
+  color: #ccc; /* Subtle text color */
+}
+
+/* Style for unread notifications */
+.notification-item.unread {
+  background-color: #003366; /* Blue background for unread */
+  border-left: 5px solid #ff7a00; /* Orange left border for emphasis */
+}
+
+/* Style for read notifications */
+.notification-item.read {
+  background-color: #333333; /* Dark grey background for read */
+  border-left: 5px solid #0077cc; /* Blue left border for read */
+}
+
+/* No notifications message */
+.no-notifications {
+  font-size: 1.2rem;
+  color: #999; /* Slightly lighter color for 'No notifications' message */
+  text-align: center;
+}
+
+
+/* Container for the entire search page */
+.search-container {
+  background-color: #121212; /* Dark background for modern feel */
+  color: #fff;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Heading */
+.search-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #f4f4f4;
+  border-bottom: 2px solid #ff7a00; /* Orange accent */
+  padding-bottom: 10px;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  width: 300px;
+  color: #fff;
+  background-color: #222;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  background-color: #ff7a00; /* Orange button */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-bar button:hover {
+  background-color: #e66d00; /* Darker orange on hover */
+}
+
+/* Filter Options */
+.filter-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-options select {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #fff;
+}
+
+/* User List */
+.user-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.user-card {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.user-card h3 {
+  margin-top: 0;
+  color: #ff7a00;
+}
+
+.user-card p {
+  color: #ccc;
+}
+
+.user-card strong {
+  color: #ff7a00;
+}
+
+/* No results message */
+.user-list p {
+  font-size: 1.2rem;
+  color: #999;
+  text-align: center;
 }
