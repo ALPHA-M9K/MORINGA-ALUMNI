@@ -167,95 +167,69 @@ def generate_token(user):
         print(f"Token generation error: {str(e)}")
         return None
 
-# Add OPTIONS route for preflight requests
-@app.route('/api/auth/login', methods=['OPTIONS'])
-@app.route('/api/auth/register', methods=['OPTIONS'])
-def handle_options():
-    response = jsonify()
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    response.headers.add('Access-Control-Allow-Methods', 'POST')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-    return response
+# User Profile Management Routes
+@app.route('/api/users/<int:user_id>', methods=['GET'])
+def get_user_profile(user_id):
+    """Get user by ID"""
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    return jsonify(user.to_dict())
 
-@app.route('/api/auth/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    
-    # Validate input
-    if not data or not data.get('email') or not data.get('password'):
-        return jsonify({'error': 'Invalid credentials'}), 400
-    
-    # Find user by email
-    user = User.query.filter_by(email=data.get('email')).first()
-    
-    # Check password
-    if not user or not user.check_password(data.get('password')):
-        return jsonify({'error': 'Invalid credentials'}), 401
-    
-    # Generate token
-    token = generate_token(user)
-    
-    # Prepare user data (including profile if exists)
-    user_data = user.to_dict()
-    if user.profile:
-        user_data['profile'] = user.profile.to_dict()
-    
-    return jsonify({
-        'user': user_data,
-        'token': token
-    }), 200
+@app.route('/api/users/<int:user_id>', methods=['PUT'])
+def update_user_profile(user_id):
+    """Update user profile"""
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
 
-@app.route('/api/auth/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    
-    # Validate input
-    if not data or not data.get('email') or not data.get('password'):
-        return jsonify({'error': 'Invalid registration data'}), 400
-    
-    # Check if user already exists
-    existing_user = User.query.filter_by(email=data.get('email')).first()
-    if existing_user:
-        return jsonify({'error': 'User already exists'}), 409
-    
-    # Create new user
-    new_user = User(
-        email=data.get('email'),
-        first_name=data.get('first_name', ''),
-        last_name=data.get('last_name', ''),
-        role=data.get('role', 'user')  # Default to 'user' if not specified
-    )
-    new_user.set_password(data.get('password'))
-    
-    # Create associated profile
-    new_profile = Profile(
-        user=new_user,
-        name=f"{new_user.first_name} {new_user.last_name}".strip(),
-    )
-    
-    # Save user and profile to database
+    data = request.json
+    if not data:
+        return jsonify({'error': 'Invalid input'}), 400
+
+    # Update fields
+    user.first_name = data.get('first_name', user.first_name)
+    user.last_name = data.get('last_name', user.last_name)
+    user.email = data.get('email', user.email)
+    if 'password' in data:
+        user.set_password(data['password'])
+
+    # Save changes
     try:
-        db.session.add(new_user)
-        db.session.add(new_profile)
         db.session.commit()
-        
-        # Generate token
-        token = generate_token(new_user)
-        
-        return jsonify({
-            'user': {
-                **new_user.to_dict(),
-                'profile': new_profile.to_dict()
-            },
-            'token': token
-        }), 201
+        return jsonify({'message': 'User profile updated successfully', 'user': user.to_dict()}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({
-            'error': 'Registration failed', 
-            'details': str(e)
-        }), 500
+        return jsonify({'error': 'Failed to update profile', 'details': str(e)}), 500
+
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    """Create a new user"""
+    data = request.json
+    if not data or 'email' not in data or 'password' not in data:
+        return jsonify({'error': 'Email and password are required'}), 400
+
+    # Check if user already exists
+    existing_user = User.query.filter_by(email=data['email']).first()
+    if existing_user:
+        return jsonify({'error': 'User already exists'}), 409
+
+    # Create new user
+    new_user = User(
+        email=data['email'],
+        first_name=data.get('first_name', ''),
+        last_name=data.get('last_name', ''),
+        role='user'
+    )
+    new_user.set_password(data['password'])
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'message': 'User created successfully', 'user': new_user.to_dict()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Failed to create user', 'details': str(e)}), 500
 
 # Seed initial admin user
 def create_admin_user():
@@ -274,13 +248,7 @@ def create_admin_user():
             )
             admin_user.set_password(admin_password)
             
-            admin_profile = Profile(
-                user=admin_user,
-                name='Admin User'
-            )
-            
             db.session.add(admin_user)
-            db.session.add(admin_profile)
             db.session.commit()
             print("Admin user created successfully")
 
@@ -293,4 +261,4 @@ if __name__ == '__main__':
         # Create admin user if not exists
         create_admin_user()
     
-    app. run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import json
 import os
-from datetime import datetime
 
 app = Flask(__name__)
 
@@ -20,35 +19,7 @@ def save_users(users):
     with open(DATA_FILE, 'w') as file:
         json.dump(users, file, indent=4)
 
-# Add a new user
-@app.route('/users', methods=['POST'])
-def create_user():
-    data = request.json
-    if not data or 'username' not in data or 'email' not in data:
-        return jsonify({'error': 'Username and email are required'}), 400
-
-    users = load_users()
-    new_user = {
-        'id': len(users),
-        'username': data['username'],
-        'email': data['email'],
-        'bio': data.get('bio', ''),
-        'location': data.get('location', ''),
-        'skills': data.get('skills', []),  # Array of skills
-        'interests': data.get('interests', []),  # Array of interests
-        'joined_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Time the user joined
-    }
-    users.append(new_user)
-    save_users(users)
-    return jsonify({'message': 'User created successfully', 'user': new_user}), 201
-
-# Get all users
-@app.route('/users', methods=['GET'])
-def get_all_users():
-    users = load_users()
-    return jsonify(users)
-
-# Get user by ID
+# Get user by ID (for simplicity, ID can be the index in the list)
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     users = load_users()
@@ -69,13 +40,32 @@ def update_user(user_id):
 
     # Update fields
     user = users[user_id]
+    user['username'] = data.get('username', user['username'])
+    user['email'] = data.get('email', user['email'])
     user['bio'] = data.get('bio', user['bio'])
-    user['location'] = data.get('location', user['location'])
-    user['skills'] = data.get('skills', user['skills'])
-    user['interests'] = data.get('interests', user['interests'])
+    user['avatar_url'] = data.get('avatar_url', user['avatar_url'])
 
     save_users(users)
     return jsonify({'message': 'User profile updated successfully', 'user': user})
+
+# Add a new user (for testing purposes)
+@app.route('/users', methods=['POST'])
+def create_user():
+    data = request.json
+    if not data or 'username' not in data or 'email' not in data:
+        return jsonify({'error': 'Username and email are required'}), 400
+
+    users = load_users()
+    new_user = {
+        'id': len(users),  # Use the index as ID
+        'username': data['username'],
+        'email': data['email'],
+        'bio': data.get('bio', ''),
+        'avatar_url': data.get('avatar_url', '')
+    }
+    users.append(new_user)
+    save_users(users)
+    return jsonify({'message': 'User created successfully', 'user': new_user}), 201
 
 # Run the Flask app (only if running this file directly)
 if __name__ == '__main__':
