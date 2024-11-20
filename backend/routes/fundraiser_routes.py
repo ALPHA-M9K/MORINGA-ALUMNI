@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import stripe  
+import stripe
 import requests  # For M-Pesa API
 import paypalrestsdk  
 from backend.model import db, Fundraiser
