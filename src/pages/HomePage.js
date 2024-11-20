@@ -9,7 +9,7 @@ const HomePage = () => {
   const [message, setMessage] = useState("");
 
   const apiKey = "2825fdb132b948dda60f566dfab8acaf";
-  const pageSize = 5;
+  const pageSize = 16;
 
   useEffect(() => {
     const fetchTechNews = async () => {
@@ -40,10 +40,10 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <h1>Welcome to the Moringa Alumni Platform</h1>
-      <p>Your community of tech enthusiasts and innovators!</p>
+      <h1>MORINGA ALUMNI </h1>
+      <p>YOUR COMMUNITY OF TECH ENTHUSIASTS AND INNOVATORS!</p>
 
-      <h2>Latest Tech News</h2>
+      <h2>LATEST TECH NEWS</h2>
       {loading ? (
         <p>Loading the latest news...</p>
       ) : (

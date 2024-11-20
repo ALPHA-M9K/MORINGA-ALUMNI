@@ -22,7 +22,7 @@ const Login = ({ setIsAuthenticated }) => {
 
     const storedEmail = localStorage.getItem("userEmail");
     const storedPassword = localStorage.getItem("userPassword");
-    const storedUserType = localStorage.getItem("userType"); 
+    const storedUserType = localStorage.getItem("userType");
 
     if (email === storedEmail && password === storedPassword) {
       setIsAuthenticated(true);
@@ -32,7 +32,6 @@ const Login = ({ setIsAuthenticated }) => {
       }
       alert("Login Successful! Redirecting...");
 
-      
       if (storedUserType === "admin") {
         navigate("/admin-dashboard");
       } else {
@@ -45,6 +44,10 @@ const Login = ({ setIsAuthenticated }) => {
 
   return (
     <div className="auth-container">
+      <div className="welcome-message">
+    <h2>Welcome back</h2>
+        <p>Login to your account below</p>
+      </div>
       <form className="auth-form" onSubmit={handleLogin}>
         <h2>Login</h2>
         <div>

@@ -92,7 +92,7 @@ const Forum = () => {
       comments: [],
     };
     setPosts([...posts, newPost]);
-    setNewPostContent(""); 
+    setNewPostContent("");
   };
 
   const createComment = (postId) => {
@@ -114,7 +114,7 @@ const Forum = () => {
           : post
       );
       setPosts(updatedPosts);
-      setNewComment(""); 
+      setNewComment("");
     }
   };
 
@@ -125,14 +125,14 @@ const Forum = () => {
         content: newSuccessStory,
       };
       setSuccessStories([...successStories, newStory]);
-      setNewSuccessStory(""); 
+      setNewSuccessStory("");
     }
   };
 
   return (
     <div className="container mx-auto p-4">
       {/* Create Post Section */}
-      <div className="bg-white shadow-md rounded-lg p-4 mb-6">
+      <div className="bg-white shadow-md rounded-lg p-4 mb-6 create-post-section">
         <h2 className="text-xl font-bold mb-4">Create a Post</h2>
         <textarea
           placeholder="Write your post here..."
@@ -149,7 +149,7 @@ const Forum = () => {
       </div>
 
       {/* Success Stories Section */}
-      <div className="bg-white shadow-md rounded-lg p-4 mb-6">
+      <div className="bg-white shadow-md rounded-lg p-4 mb-6 success-stories-section">
         <h2 className="text-xl font-bold mb-4">Success Stories</h2>
         <textarea
           value={newSuccessStory}
@@ -173,9 +173,12 @@ const Forum = () => {
       </div>
 
       {/* Posts Section */}
-      <div className="space-y-6">
+      <div className="space-y-6 posts-section">
         {posts.map((post) => (
-          <div key={post.id} className="bg-white shadow-md rounded-lg p-6 mb-4">
+          <div
+            key={post.id}
+            className="bg-white shadow-md rounded-lg p-6 mb-4 post-section"
+          >
             <h3 className="text-xl font-semibold mb-2">{post.content}</h3>
             <div className="flex gap-4 mb-4">
               <button
@@ -230,3 +233,4 @@ const Forum = () => {
 };
 
 export default Forum;
+

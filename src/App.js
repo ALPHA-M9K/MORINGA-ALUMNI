@@ -64,7 +64,7 @@ function App() {
       setCurrentTime(new Date().toLocaleTimeString());
     }, 1000);
 
-    
+    // Cleanup interval when component unmounts
     return () => clearInterval(interval);
   }, []);
 
