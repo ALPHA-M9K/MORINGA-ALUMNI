@@ -1,76 +1,3 @@
-# # app.py or run.py
-# from flask import Flask, jsonify, request
-# from flask_cors import CORS
-# from flask_sqlalchemy import SQLAlchemy
-# from werkzeug.security import generate_password_hash
-# import os
-
-# app = Flask(__name__)
-# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-
-# # Database Configuration
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['SECRET_KEY'] = 'your_secret_key'
-
-# db = SQLAlchemy(app)
-
-# # User Model
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
-#     password = db.Column(db.String(255), nullable=False)
-#     first_name = db.Column(db.String(50), nullable=False)
-#     last_name = db.Column(db.String(50), nullable=True)
-
-# # Authentication Routes
-# @app.route('/api/auth/register', methods=['POST'])
-# def register():
-#     data = request.get_json()
-    
-#     # Validate input
-#     if not data:
-#         return jsonify({'error': 'No input data provided'}), 400
-    
-#     # Check if user exists
-#     existing_user = User.query.filter_by(email=data.get('email')).first()
-#     if existing_user:
-#         return jsonify({'error': 'User already exists'}), 409
-    
-#     # Create new user
-#     hashed_password = generate_password_hash(data.get('password'))
-#     new_user = User(
-#         email=data.get('email'),
-#         password=hashed_password,
-#         first_name=data.get('first_name', ''),
-#         last_name=data.get('last_name', '')
-#     )
-    
-#     try:
-#         db.session.add(new_user)
-#         db.session.commit()
-        
-#         return jsonify({
-#             'message': 'Registration successful',
-#             'user': {
-#                 'id': new_user.id,
-#                 'email': new_user.email,
-#                 'first_name': new_user.first_name,
-#                 'last_name': new_user.last_name
-#             }
-#         }), 201
-    
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({'error': str(e)}), 500
-
-# # Other routes (login, logout, etc.) would be similar
-
-# if __name__ == '__main__':
-#     with app.app_context():
-#         db.create_all()
-#     app.run(debug=True, host='0.0.0.0', port=5000)
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -188,6 +115,8 @@ def login():
     
     # Find user by email
     user = User.query.filter_by(email=data.get('email')).first()
+
+    print(user.check_password(data.get('password')))
     
     # Check password
     if not user or not user.check_password(data.get('password')):
