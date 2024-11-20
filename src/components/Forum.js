@@ -80,43 +80,65 @@ const Forum = () => {
     );
     setPosts(updatedPosts);
   };
+  const API_BASE_URL = "http://localhost:5000/api"; // Adjust this to include the /api prefix
 
-  const createPost = () => {
-    const newPost = {
-      id: posts.length + 1,
-      content: newPostContent,
-      username: "newUser",
-      createdAt: new Date().toLocaleDateString(),
-      upvotes: 0,
-      downvotes: 0,
-      comments: [],
-    };
-    setPosts([...posts, newPost]);
-    setNewPostContent(""); 
-  };
+const createPost = async () => {
+  if (!newPostContent.trim()) return; // Prevent empty posts
+  try {
+    const response = await fetch(`${API_BASE_URL}/posts`, { // Updated URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Include your authorization token if needed
+        // 'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ content: newPostContent }),
+    });
 
-  const createComment = (postId) => {
-    if (newComment.trim()) {
-      const updatedPosts = posts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              comments: [
-                ...post.comments,
-                {
-                  id: post.comments.length + 1,
-                  content: newComment,
-                  username: "newCommenter",
-                  createdAt: new Date().toLocaleDateString(),
-                },
-              ],
-            }
-          : post
-      );
-      setPosts(updatedPosts);
-      setNewComment(""); 
+    if (response.ok) {
+      const newPost = await response.json();
+      setPosts((prevPosts) => [...prevPosts, newPost]);
+      setNewPostContent("");
+    } else {
+      const errorData = await response.json();
+      console.error("Failed to create post:", errorData);
     }
-  };
+  } catch (error) {
+    console.error("Error creating post:", error);
+  }
+};
+
+const createComment = async (postId) => {
+  if (!newComment.trim()) return; // Prevent empty comments
+  try {
+    const response = await fetch(`${API_BASE_URL}/posts/${postId}/comments`, { // Updated URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Include your authorization token if needed
+        // 'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ content: newComment }),
+    });
+
+    if (response.ok) {
+      const newCommentData = await response.json();
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: [...post.comments, newCommentData] }
+            : post
+        )
+      );
+      setNewComment("");
+    } else {
+      const errorData = await response.json();
+      console.error("Failed to create comment:", errorData);
+    }
+  } catch (error) {
+    console.error("Error creating comment:", error);
+  }
+};
 
   const createSuccessStory = () => {
     if (newSuccessStory.trim()) {

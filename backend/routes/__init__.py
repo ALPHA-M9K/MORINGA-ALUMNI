@@ -39,25 +39,25 @@
 
 #     return app
 # app/__init__.py
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-import os 
-app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+# from flask import Flask
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_cors import CORS
+# import os 
+# app = Flask(__name__)
+# CORS(app)  # Enable CORS for all routes
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///Database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
+# # Database configuration
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///Database.db')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
-# Register blueprints
-from auth import auth_bp
-app.register_blueprint(auth_bp, url_prefix='/api/auth')
+# # Register blueprints
+# from auth_routes import auth_bp
+# app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
-# Create database tables
-with app.app_context():
-    db.create_all()
+# # Create database tables
+# with app.app_context():
+#     db.create_all()
     
