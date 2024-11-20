@@ -1,12 +1,8 @@
+from app import create_app
 
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
-import datetime
-import os
+app = create_app()
 
+<<<<<<< HEAD
 # Flask app configuration
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///MoringaAlumni.db'
@@ -217,7 +213,7 @@ def delete_user(user_id):
     return '', 204
 
 # Initialize the database and run the app
+=======
+>>>>>>> 3b9daa9f132bab77fca393882b58db0278441a2c
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True, port=5000)
+    app.run(debug=True)
