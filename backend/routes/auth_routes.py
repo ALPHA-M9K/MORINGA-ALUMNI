@@ -157,6 +157,8 @@ def login():
     
     # Find user
     user = User.query.filter_by(email=data.get('email')).first()
+
+    print(user)
     
     # Check credentials
     if user and check_password_hash(user.password, data.get('password')):
