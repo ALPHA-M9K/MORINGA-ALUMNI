@@ -1,14 +1,47 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 db = SQLAlchemy()
 
-# User Profile Model
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(50), nullable=True)
+    last_name = db.Column(db.String(50), nullable=True)
+    role = db.Column(db.String(20), nullable=False, default='user')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationship with Profile
+    profile = db.relationship('Profile', uselist=False, back_populates='user')
+
+    def set_password(self, password):
+        """Set hashed password"""
+        self.password = generate_password_hash(password)
+
+    def check_password(self, raw_password):
+        """Check if provided password is correct"""
+        return check_password_hash(self.password, raw_password)
+
+    def to_dict(self):
+        """Convert user to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'role': self.role
+        }
+
+# Extend the existing Profile model to link with User
 class Profile(db.Model):
     __tablename__ = 'profiles'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, nullable=False)
     name = db.Column(db.String, nullable=False)
     bio = db.Column(db.Text)
     location = db.Column(db.String)
@@ -16,13 +49,29 @@ class Profile(db.Model):
     interests = db.Column(db.Text)
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Relationship with User
+    user = db.relationship('User', back_populates='profile')
+
+    # Existing relationships
     posts = db.relationship('Post', backref='profile', lazy=True)
     success_stories = db.relationship('SuccessStory', backref='profile', lazy=True)
     fundraisers = db.relationship('Fundraiser', backref='profile', lazy=True)
     notifications = db.relationship('Notification', backref='profile', lazy=True)
     cohort_memberships = db.relationship('CohortMembership', backref='profile', lazy=True)
 
-
+    def to_dict(self):
+        """Convert profile to dictionary"""
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'name': self.name,
+            'bio': self.bio,
+            'location': self.location,
+            'skills': self.skills,
+            'interests': self.interests,
+            'joined_at': self.joined_at.isoformat() if self.joined_at else None
+        }
+    
 # Cohorts Model
 class Cohort(db.Model):
     __tablename__ = 'cohorts'
