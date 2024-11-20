@@ -51,7 +51,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from flask_cors import cross_origin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db
+from backend.routes import db
 from models import User
 import jwt
 import datetime
