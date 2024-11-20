@@ -1,44 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "./components/LandingPage";
-import Forum from "./components/Forum";
-import PostPage from "./pages/PostPage";
-import ForgotPassword from "./pages/ForgotPassword";
-import TermsPage from "./pages/TermsPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
-import AboutPage from "./pages/AboutPage";
 import HomePage from "./pages/HomePage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import ContactUs from "./pages/ContactUs";
-import CookiePolicy from "./pages/CookiePolicy";
-import CopyrightPolicy from "./pages/CopyrightPolicy";
-import UserAgreement from "./pages/UserAgreement";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import CohortList from "./components/CohortList";
-import AddCohort from "./components/AddCohort";
-import CohortDetails from "./components/CohortDetails";
-import Settings from "./components/Settings";
+import Fundraiser from "./pages/Fundraiser"; 
+import CreateFundraiser from './components/FundraiserCreated';
 import ProfilePage from "./features/profile/ProfilePage";
-import PaymentPlans from "./components/PaymentPlans";
-import Fundraiser from "./pages/Fundraiser";
-import PaymentDetails from "./pages/PaymentDetails";
-import SelectPlanPage from "./pages/SelectPlanPage";
+import Settings from "./components/Settings";
 import PaymentPage from "./pages/PaymentPage";
-import Notifications from "./components/Notifications";
-import Search from "./components/Search";
+
+
 import "./App.css";
 
 function App() {
-  const [cohorts, setCohorts] = useState([]);
-  const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentTime, setCurrentTime] = useState(
     new Date().toLocaleTimeString()
@@ -64,7 +41,7 @@ function App() {
       setCurrentTime(new Date().toLocaleTimeString());
     }, 1000);
 
-    
+    // Cleanup interval when component unmounts
     return () => clearInterval(interval);
   }, []);
 
@@ -134,10 +111,7 @@ function App() {
               <div className="flex space-x-4">
                 {isAuthenticated ? (
                   <>
-                    <Link
-                      to="/"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Home
                     </Link>
                     <Link
@@ -152,22 +126,10 @@ function App() {
                     >
                       Fundraiser
                     </Link>
-                    <Link
-                      to="/add-cohort"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
-                      Add Cohort
-                    </Link>
-                    <Link
-                      to="/profile"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/profile" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Profile
                     </Link>
-                    <Link
-                      to="/settings"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/settings" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Settings
                     </Link>
                     <Link
@@ -191,16 +153,10 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/login"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/login" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Login
                     </Link>
-                    <Link
-                      to="/register"
-                      className="px-3 py-2 rounded-md hover:bg-blue-700"
-                    >
+                    <Link to="/register" className="px-3 py-2 rounded-md hover:bg-blue-700">
                       Register
                     </Link>
                   </>
@@ -213,6 +169,8 @@ function App() {
         {/* Main Content */}
         <main className="flex-grow container mx-auto px-4 py-8">
           <Routes>
+            <Route path="/" element={isAuthenticated ? <HomePage /> : <LandingPage />} />
+            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
             <Route
               path="/payment"
               element={
@@ -229,78 +187,11 @@ function App() {
               element={<Login setIsAuthenticated={setIsAuthenticated} />}
             />
             <Route path="/register" element={<Register />} />
-            <Route
-              path="/posts"
-              element={
-                isAuthenticated ? <PostPage /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                isAuthenticated ? <Settings /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/cohorts"
-              element={
-                isAuthenticated ? (
-                  <CohortList cohorts={cohorts} onRemoveCohort={removeCohort} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/add-cohort"
-              element={
-                isAuthenticated ? (
-                  <AddCohort onAddCohort={addCohort} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/cohort/:id"
-              element={
-                isAuthenticated ? (
-                  <CohortDetails cohorts={cohorts} onAddMember={addMember} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/fundraiser"
-              element={
-                isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />
-              }
-            />
-
-            {/* Other routes */}
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/copyright-policy" element={<CopyrightPolicy />} />
-            <Route path="/user-agreement" element={<UserAgreement />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/donate/:fundraiserId" element={<PaymentDetails />} />
-            <Route path="/payment-plans" element={<PaymentPlans />} />
-            <Route path="/select-plan/:planId" element={<SelectPlanPage />} />
-            <Route path="/payment-page" element={<PaymentPage />} />
+            <Route path="/fundraiser" element={isAuthenticated ? <Fundraiser /> : <Navigate to="/login" />} />
+            <Route path="/create" element={isAuthenticated ? <CreateFundraiser /> : <Navigate to="/login" />} />
+            <Route path="/fundraisercreated" element={isAuthenticated ? <CreateFundraiser /> : <Navigate to="/login" />} />
+            <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+            <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           </Routes>
         </main>
 

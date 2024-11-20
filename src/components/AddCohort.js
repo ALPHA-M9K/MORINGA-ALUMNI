@@ -34,7 +34,7 @@ function AddCohort({
       const newCohort = {
         name: cohortName,
         isPrivate,
-        admin: isPrivate ? null : currentUser || username, // Admin for private cohorts is null initially
+        admin: isPrivate ? null : currentUser || username, 
       };
 
       onAddCohort(newCohort);
@@ -56,7 +56,7 @@ function AddCohort({
   const handleAssignAdmin = (cohortId) => {
     const cohort = cohorts.find((c) => c.id === cohortId);
     if (cohort && selectedAdmin) {
-      cohort.admin = selectedAdmin; // Assign admin to the cohort
+      cohort.admin = selectedAdmin; 
       alert(`Admin ${selectedAdmin} assigned to ${cohort.name}`);
       setSelectedAdmin("");
     } else {
