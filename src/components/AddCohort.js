@@ -207,162 +207,6 @@
 // export default AddCohort;
 
 
-// import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from 'axios';
-
-// function AddCohort() {
-//   const [cohorts, setCohorts] = useState([]);
-//   const [cohortName, setCohortName] = useState("");
-//   const [isPrivate, setIsPrivate] = useState(false);
-//   const [currentUser, setCurrentUser] = useState(null);
-//   const [joinCohortId, setJoinCohortId] = useState("");
-
-//   const navigate = useNavigate();
-
-//   // Fetch cohorts when component mounts
-//   useEffect(() => {
-//     fetchCohorts();
-//   }, []);
-
-//   const fetchCohorts = async () => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       const response = await axios.get('http://localhost:5000/cohort/list', {
-//         headers: { Authorization: `Bearer ${token}` }
-//       });
-//       setCohorts(response.data);
-//     } catch (error) {
-//       console.error("Failed to fetch cohorts", error);
-//       alert("Failed to load cohorts");
-//     }
-//   };
-
-//   const handleCreateCohort = async (e) => {
-//     e.preventDefault();
-
-//     if (!cohortName.trim()) {
-//       alert("Cohort name cannot be empty");
-//       return;
-//     }
-
-// try {
-//   const token = localStorage.getItem('token');
-//   const response = await axios.post('http://localhost:5000/cohort/create', 
-//     { 
-//       name: cohortName, 
-//       isPrivate 
-//     },
-//     {
-//       headers: { 
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'application/json'
-//       }
-//     }
-//   );
-
-//   // Refresh cohorts list
-//   fetchCohorts();
-
-//   alert(`Cohort "${cohortName}" created successfully`);
-//   setCohortName("");
-//   setIsPrivate(false);
-// } catch (error) {
-//   console.error("Cohort creation failed", error);
-//   alert(error.response?.data?.error || "Failed to create cohort");
-// }
-//   };
-
-//   const handleJoinCohort = async (e) => {
-//     e.preventDefault();
-
-//     if (!joinCohortId.trim()) {
-//       alert("Cohort ID cannot be empty");
-//       return;
-//     }
-
-// try {
-//   const token = localStorage.getItem('token');
-//   const response = await axios.post('http://localhost:5000/cohort/join', 
-//     { cohortId: joinCohortId },
-//     {
-//       headers: { 
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'application/json'
-//       }
-//     }
-//   );
-
-//   // Refresh cohorts list
-//   fetchCohorts();
-
-//   alert("Successfully joined cohort");
-//   navigate(`/cohort/${joinCohortId}`);
-// } catch (error) {
-//   console.error("Join cohort failed", error);
-//   alert(error.response?.data?.error || "Failed to join cohort");
-// }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Add or Join a Cohort</h2>
-
-//       <div>
-//         <h3>Create a New Cohort</h3>
-//         <form onSubmit={handleCreateCohort}>
-//           <input
-//             type="text"
-//             placeholder="Enter cohort name"
-//             value={cohortName}
-//             onChange={(e) => setCohortName(e.target.value)}
-//           />
-//           <label>
-//             <input
-//               type="checkbox"
-//               checked={isPrivate}
-//               onChange={(e) => setIsPrivate(e.target.checked)}
-//             />
-//             Private Cohort
-//           </label>
-//           <button type="submit">Add Cohort</button>
-//         </form>
-//       </div>
-
-//   <div>
-//     <h3>Join an Existing Cohort</h3>
-//     <form onSubmit={handleJoinCohort}>
-//       <input
-//         type="text"
-//         placeholder="Enter cohort ID"
-//         value={joinCohortId}
-//         onChange={(e) => setJoinCohortId(e.target.value)}
-//       />
-//       <button type="submit">Join Cohort</button>
-//     </form>
-//   </div>
-
-//   <div>
-//     <h3>Available Cohorts</h3>
-//     {cohorts.length > 0 ? (
-//       cohorts.map((cohort) => (
-//         <div key={cohort.id}>
-//           <h4>
-//             {cohort.name} {cohort.isPrivate ? "(Private)" : ""}
-//           </h4>
-//           <p>Admin: {cohort.admin || "Unassigned"}</p>
-//         </div>
-//       ))
-//     ) : (
-//       <p>No cohorts available.</p>
-//     )}
-//   </div>
-// </div>
-//   );
-// }
-
-// export default AddCohort;
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -371,6 +215,7 @@ function AddCohort() {
   const [cohorts, setCohorts] = useState([]);
   const [cohortName, setCohortName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [joinCohortId, setJoinCohortId] = useState("");
 
   const navigate = useNavigate();
@@ -384,15 +229,12 @@ function AddCohort() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:5000/cohort/list', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
       setCohorts(response.data);
     } catch (error) {
       console.error("Failed to fetch cohorts", error);
-      alert(error.response?.data?.error || "Failed to load cohorts");
+      alert("Failed to load cohorts");
     }
   };
 
@@ -404,73 +246,63 @@ function AddCohort() {
       return;
     }
 
-    if (!currentUser) {
-      setCurrentUser(username);
-    }
-
-    if (cohortName.trim()) {
-      const newCohort = {
-        name: cohortName,
-        isPrivate,
-        admin: isPrivate ? null : currentUser || username, 
-      };
-
-      onAddCohort(newCohort);
-      setCohortName("");
-      setIsPrivate(false);
-
-      if (isPrivate) {
-        alert(
-          `Private cohort "${cohortName}" created! Please assign an admin.`
-        );
-      } else {
-        alert(`Cohort "${cohortName}" created!`);
+try {
+  const token = localStorage.getItem('token');
+  const response = await axios.post('http://localhost:5000/cohort/create', 
+    { 
+      name: cohortName, 
+      isPrivate 
+    },
+    {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }
-    } else {
-      alert("Cohort name cannot be empty");
     }
+  );
+
+  // Refresh cohorts list
+  fetchCohorts();
+
+  alert(`Cohort "${cohortName}" created successfully`);
+  setCohortName("");
+  setIsPrivate(false);
+} catch (error) {
+  console.error("Cohort creation failed", error);
+  alert(error.response?.data?.error || "Failed to create cohort");
+}
   };
 
-  const handleAssignAdmin = (cohortId) => {
-    const cohort = cohorts.find((c) => c.id === cohortId);
-    if (cohort && selectedAdmin) {
-      cohort.admin = selectedAdmin; 
-      alert(`Admin ${selectedAdmin} assigned to ${cohort.name}`);
-      setSelectedAdmin("");
-    } else {
-      alert("Please select a valid admin");
-    }
-  };
-const handleJoinCohort = async (e) => {
+  const handleJoinCohort = async (e) => {
     e.preventDefault();
 
     if (!joinCohortId.trim()) {
-        alert("Cohort ID cannot be empty");
-        return;
+      alert("Cohort ID cannot be empty");
+      return;
     }
 
-    try {
-        const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:5000/cohort/join', 
-            { cohortId: joinCohortId },
-            {
-                headers: { 
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        // Refresh cohorts list
-        fetchCohorts();
-
-        alert("Successfully joined cohort");
-        navigate(`/cohort/${joinCohortId}`);
-    } catch (error) {
-        console.error("Join cohort failed", error);
-        alert(error.response?.data?.error || "Failed to join cohort");
+try {
+  const token = localStorage.getItem('token');
+  const response = await axios.post('http://localhost:5000/cohort/join', 
+    { cohortId: joinCohortId },
+    {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     }
-};
+  );
+
+  // Refresh cohorts list
+  fetchCohorts();
+
+  alert("Successfully joined cohort");
+  navigate(`/cohort/${joinCohortId}`);
+} catch (error) {
+  console.error("Join cohort failed", error);
+  alert(error.response?.data?.error || "Failed to join cohort");
+}
+  };
 
   return (
     <div>
@@ -497,36 +329,204 @@ const handleJoinCohort = async (e) => {
         </form>
       </div>
 
-      <div>
-        <h3>Join an Existing Cohort</h3>
-        <form onSubmit={handleJoinCohort}>
-          <input
-            type="text"
-            placeholder="Enter cohort ID"
-            value={joinCohortId}
-            onChange={(e) => setJoinCohortId(e.target.value)}
-          />
-          <button type="submit">Join Cohort</button>
-        </form>
-      </div>
+  <div>
+    <h3>Join an Existing Cohort</h3>
+    <form onSubmit={handleJoinCohort}>
+      <input
+        type="text"
+        placeholder="Enter cohort ID"
+        value={joinCohortId}
+        onChange={(e) => setJoinCohortId(e.target.value)}
+      />
+      <button type="submit">Join Cohort</button>
+    </form>
+  </div>
 
-      <div>
-        <h3>Available Cohorts</h3>
-        {cohorts.length > 0 ? (
-          cohorts.map((cohort) => (
-            <div key={cohort.id}>
-              <h4>
-                {cohort.name} {cohort.isPrivate ? "(Private)" : ""}
-              </h4>
-              <p>Admin: {cohort.admin || "Unassigned"}</p>
-            </div>
-          ))
-        ) : (
-          <p>No cohorts available.</p>
-        )}
-      </div>
-    </div>
+  <div>
+    <h3>Available Cohorts</h3>
+    {cohorts.length > 0 ? (
+      cohorts.map((cohort) => (
+        <div key={cohort.id}>
+          <h4>
+            {cohort.name} {cohort.isPrivate ? "(Private)" : ""}
+          </h4>
+          <p>Admin: {cohort.admin || "Unassigned"}</p>
+        </div>
+      ))
+    ) : (
+      <p>No cohorts available.</p>
+    )}
+  </div>
+</div>
   );
 }
 
 export default AddCohort;
+
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from 'axios';
+
+// function AddCohort() {
+//   const [cohorts, setCohorts] = useState([]);
+//   const [cohortName, setCohortName] = useState("");
+//   const [isPrivate, setIsPrivate] = useState(false);
+//   const [joinCohortId, setJoinCohortId] = useState("");
+
+//   const navigate = useNavigate();
+
+//   // Fetch cohorts when component mounts
+//   useEffect(() => {
+//     fetchCohorts();
+//   }, []);
+
+//   const fetchCohorts = async () => {
+//     try {
+//       const token = localStorage.getItem('token');
+//       const response = await axios.get('http://localhost:5000/cohort/list', {
+//         headers: {
+//           'Authorization': `Bearer ${token}`,
+//           'Content-Type': 'application/json'
+//         }
+//       });
+//       setCohorts(response.data);
+//     } catch (error) {
+//       console.error("Failed to fetch cohorts", error);
+//       alert(error.response?.data?.error || "Failed to load cohorts");
+//     }
+//   };
+
+//   const handleCreateCohort = async (e) => {
+//     e.preventDefault();
+
+//     if (!cohortName.trim()) {
+//       alert("Cohort name cannot be empty");
+//       return;
+//     }
+
+//     if (!currentUser) {
+//       setCurrentUser(username);
+//     }
+
+//     if (cohortName.trim()) {
+//       const newCohort = {
+//         name: cohortName,
+//         isPrivate,
+//         admin: isPrivate ? null : currentUser || username, 
+//       };
+
+//       onAddCohort(newCohort);
+//       setCohortName("");
+//       setIsPrivate(false);
+
+//       if (isPrivate) {
+//         alert(
+//           `Private cohort "${cohortName}" created! Please assign an admin.`
+//         );
+//       } else {
+//         alert(`Cohort "${cohortName}" created!`);
+//       }
+//     } else {
+//       alert("Cohort name cannot be empty");
+//     }
+//   };
+
+//   const handleAssignAdmin = (cohortId) => {
+//     const cohort = cohorts.find((c) => c.id === cohortId);
+//     if (cohort && selectedAdmin) {
+//       cohort.admin = selectedAdmin; 
+//       alert(`Admin ${selectedAdmin} assigned to ${cohort.name}`);
+//       setSelectedAdmin("");
+//     } else {
+//       alert("Please select a valid admin");
+//     }
+//   };
+// const handleJoinCohort = async (e) => {
+//     e.preventDefault();
+
+//     if (!joinCohortId.trim()) {
+//         alert("Cohort ID cannot be empty");
+//         return;
+//     }
+
+//     try {
+//         const token = localStorage.getItem('token');
+//         const response = await axios.post('http://localhost:5000/cohort/join', 
+//             { cohortId: joinCohortId },
+//             {
+//                 headers: { 
+//                     Authorization: `Bearer ${token}`,
+//                     'Content-Type': 'application/json'
+//                 }
+//             }
+//         );
+
+//         // Refresh cohorts list
+//         fetchCohorts();
+
+//         alert("Successfully joined cohort");
+//         navigate(`/cohort/${joinCohortId}`);
+//     } catch (error) {
+//         console.error("Join cohort failed", error);
+//         alert(error.response?.data?.error || "Failed to join cohort");
+//     }
+// };
+
+//   return (
+//     <div>
+//       <h2>Add or Join a Cohort</h2>
+
+//       <div>
+//         <h3>Create a New Cohort</h3>
+//         <form onSubmit={handleCreateCohort}>
+//           <input
+//             type="text"
+//             placeholder="Enter cohort name"
+//             value={cohortName}
+//             onChange={(e) => setCohortName(e.target.value)}
+//           />
+//           <label>
+//             <input
+//               type="checkbox"
+//               checked={isPrivate}
+//               onChange={(e) => setIsPrivate(e.target.checked)}
+//             />
+//             Private Cohort
+//           </label>
+//           <button type="submit">Add Cohort</button>
+//         </form>
+//       </div>
+
+//       <div>
+//         <h3>Join an Existing Cohort</h3>
+//         <form onSubmit={handleJoinCohort}>
+//           <input
+//             type="text"
+//             placeholder="Enter cohort ID"
+//             value={joinCohortId}
+//             onChange={(e) => setJoinCohortId(e.target.value)}
+//           />
+//           <button type="submit">Join Cohort</button>
+//         </form>
+//       </div>
+
+//       <div>
+//         <h3>Available Cohorts</h3>
+//         {cohorts.length > 0 ? (
+//           cohorts.map((cohort) => (
+//             <div key={cohort.id}>
+//               <h4>
+//                 {cohort.name} {cohort.isPrivate ? "(Private)" : ""}
+//               </h4>
+//               <p>Admin: {cohort.admin || "Unassigned"}</p>
+//             </div>
+//           ))
+//         ) : (
+//           <p>No cohorts available.</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default AddCohort;

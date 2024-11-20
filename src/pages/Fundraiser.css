@@ -1,0 +1,172 @@
+/* General Styles */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f5f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #004aad; /* Primary Blue */
+  margin-bottom: 20px;
+}
+
+/* Currency Toggle Buttons */
+button {
+  background-color: #004aad; /* Primary Blue */
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #ff7f11; /* Secondary Orange */
+}
+
+button.font-bold {
+  box-shadow: 0 0 10px rgba(0, 74, 173, 0.6); /* Highlight for active state */
+  transform: scale(1.05);
+}
+
+/* Fundraiser Cards */
+.max-w-sm {
+  background-color: #fff;
+  border: 1px solid #e1e5f2;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.max-w-sm:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.max-w-sm img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.px-6 {
+  padding: 20px;
+}
+
+.font-bold {
+  font-size: 1.2rem;
+  color: #004aad; /* Primary Blue */
+}
+
+.text-gray-700 {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Progress Bar */
+.w-full.bg-gray-200 {
+  background-color: #e3e7f1;
+  height: 10px;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+}
+
+.h-4.rounded-full {
+  transition: width 0.5s ease-in-out;
+}
+
+.h-4 {
+  height: 10px;
+  border-radius: 25px;
+}
+
+.h-4[data-progress="high"] {
+  background-color: #28a745; /* Green for high progress */
+}
+
+.h-4[data-progress="medium"] {
+  background-color: #ffcc00; /* Yellow for medium progress */
+}
+
+.h-4[data-progress="low"] {
+  background-color: #ff4d4f; /* Red for low progress */
+}
+
+/* Buttons and Links */
+a.bg-blue-500 {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #004aad; /* Primary Blue */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+a.bg-blue-500:hover {
+  background-color: #00337f; /* Darker Blue */
+  transform: translateY(-2px);
+}
+
+a.bg-green-500 {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  background-color: #28a745; /* Green for creating a new fundraiser */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+a.bg-green-500:hover {
+  background-color: #1e7d33;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  gap: 30px;
+}
+
+.grid-cols-1 {
+  grid-template-columns: 1fr;
+}
+
+.md\\:grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.lg\\:grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Footer or Secondary Links */
+.mt-8.text-center a {
+  color: #ff7f11; /* Secondary Orange */
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.mt-8.text-center a:hover {
+  color: #cc660e; /* Darker Orange */
+}

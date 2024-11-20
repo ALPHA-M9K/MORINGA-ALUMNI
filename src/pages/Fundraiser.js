@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import axios from "axios";
+import "./Fundraiser.css";
 
 
 
@@ -151,7 +152,7 @@ const Fundraiser = () => {
       {/* Add Fundraiser Link */}
       <div className="mt-8 text-center">
         <Link
-          to="/create"
+          to="/create-fundraiser"
           className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-700"
         >
           Create a New Fundraiser

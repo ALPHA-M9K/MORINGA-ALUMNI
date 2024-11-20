@@ -79,7 +79,7 @@ def generate_token(user):
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
     }
     return jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
-=======
+
     """Generate JWT token for user"""
     try:
         payload = {
@@ -161,16 +161,16 @@ def register():
 
     return jsonify(new_user.to_dict()), 201
 
-@app.route('/api/auth/login', methods=['POST'])
-def login():
-    data = request.json
-    user = User.query.filter_by(email=data.get('email')).first()
+# @app.route('/api/auth/login', methods=['POST'])
+# def login():
+#     data = request.json
+#     user = User.query.filter_by(email=data.get('email')).first()
 
-    if not user or not user.check_password(data.get('password')):
-        return jsonify({'error': 'Invalid credentials'}), 401
+#     if not user or not user.check_password(data.get('password')):
+#         return jsonify({'error': 'Invalid credentials'}), 401
 
-    token = generate_token(user)
-    return jsonify({'user': user.to_dict(), 'token': token}), 200
+#     token = generate_token(user)
+#     return jsonify({'user': user.to_dict(), 'token': token}), 200
 
 # Alumni management routes
 @app.route('/api/users', methods=['POST'])

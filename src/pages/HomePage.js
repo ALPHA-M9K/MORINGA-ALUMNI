@@ -123,6 +123,7 @@
 // HomePage Component
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./HomePage.css"; 
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
