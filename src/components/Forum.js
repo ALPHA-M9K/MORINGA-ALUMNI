@@ -132,8 +132,8 @@ const Forum = () => {
             onChange={(e) => setNewPostType(e.target.value)}
             className="w-full p-2 border rounded"
           >
-            <option value="General">General</option>
-            <option value="Question">Question</option>
+            
+            <option value="Question">Discussion Forum</option>
             <option value="Success Story">Success Story</option>
           </select>
         </div>
