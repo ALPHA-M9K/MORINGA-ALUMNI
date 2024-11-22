@@ -17,12 +17,10 @@ const PaymentDetails = () => {
       return;
     }
 
-    
     alert(
       `Donating ${paymentAmount} ${currency} using ${paymentMethod} for fundraiser ID ${fundraiserId}`
     );
 
-    
     navigate("/");
   };
 
@@ -174,6 +172,3 @@ const PaymentDetails = () => {
 };
 
 export default PaymentDetails;
-
-
-

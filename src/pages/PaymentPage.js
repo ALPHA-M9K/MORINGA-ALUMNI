@@ -11,11 +11,19 @@ const PaymentPage = () => {
   const [currency, setCurrency] = useState("USD");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [mpesaNumber, setMpesaNumber] = useState("");
+  const [transactionCode, setTransactionCode] = useState("");
 
   if (!planDetails) {
     return (
       <div className="text-center p-8">
-        No plan selected. Please select a plan first.
+        <p>No plan selected. Please select a plan first.</p>
+        <button
+          onClick={() => navigate("/plans")}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          Go to Plans
+        </button>
       </div>
     );
   }
@@ -27,8 +35,20 @@ const PaymentPage = () => {
       return;
     }
 
-    alert(`Processing payment for ${planDetails.name} using ${paymentMethod}`);
-    navigate("/");
+    if (paymentMethod === "Mpesa" && (!mpesaNumber || !transactionCode)) {
+      alert("Please provide both your M-Pesa number and transaction code.");
+      return;
+    }
+
+    
+    alert(
+      `Processing payment for ${planDetails.name} using ${paymentMethod}. ${
+        paymentMethod === "Mpesa"
+          ? `M-Pesa Number: ${mpesaNumber}, Transaction Code: ${transactionCode}`
+          : ""
+      }`
+    );
+    navigate("/"); 
   };
 
   return (
@@ -38,11 +58,11 @@ const PaymentPage = () => {
       </h1>
 
       {/* Plan Summary */}
-      <div className="max-w-sm mx-auto bg-blue-50 p-4 rounded-lg mb-6">
+      <div className="max-w-sm mx-auto bg-blue-50 p-4 rounded-lg mb-6 shadow">
         <h2 className="text-xl font-bold mb-2">Plan Summary</h2>
         <p className="text-lg font-semibold">{planDetails.name}</p>
         <p className="text-gray-600">
-          {currency} {planDetails.price[currency]}
+          {currency} {planDetails.price[currency] || "N/A"}
         </p>
         <p className="text-sm text-gray-500 mt-2">{planDetails.description}</p>
       </div>
@@ -103,7 +123,7 @@ const PaymentPage = () => {
           </select>
         </div>
 
-        {/* Conditional Payment Fields */}
+        {/* M-Pesa Slot */}
         {paymentMethod === "Mpesa" && (
           <div className="mb-4">
             <label htmlFor="mpesaNumber" className="block text-lg font-bold">
@@ -112,8 +132,26 @@ const PaymentPage = () => {
             <input
               type="text"
               id="mpesaNumber"
+              value={mpesaNumber}
+              onChange={(e) => setMpesaNumber(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded mt-2"
               placeholder="Enter your M-Pesa number"
+              required
+            />
+
+            <label
+              htmlFor="transactionCode"
+              className="block text-lg font-bold mt-4"
+            >
+              Transaction Code
+            </label>
+            <input
+              type="text"
+              id="transactionCode"
+              value={transactionCode}
+              onChange={(e) => setTransactionCode(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mt-2"
+              placeholder="Enter the M-Pesa transaction code"
               required
             />
           </div>
