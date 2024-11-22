@@ -115,7 +115,7 @@ const HomePage = () => {
 
 const styles = {
   container: {
-    padding: '20px',
+    padding: "20px",
     color: '#333',
     backgroundColor: '#f4f4f9',
     fontFamily: 'Arial, sans-serif',
