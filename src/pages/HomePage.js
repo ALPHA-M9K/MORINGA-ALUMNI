@@ -9,7 +9,8 @@ const HomePage = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const apiKey = "2825fdb132b948dda60f566dfab8acaf";
+  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+
   const pageSize = 16;
 
   useEffect(() => {
