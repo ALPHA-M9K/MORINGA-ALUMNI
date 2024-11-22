@@ -17,11 +17,21 @@ const PaymentDetails = () => {
       return;
     }
 
+    if (!paymentAmount || isNaN(paymentAmount) || paymentAmount <= 0) {
+      alert("Please enter a valid donation amount.");
+      return;
+    }
+
     alert(
       `Donating ${paymentAmount} ${currency} using ${paymentMethod} for fundraiser ID ${fundraiserId}`
     );
 
-    navigate("/");
+    // Clear the form or navigate as needed
+    setPaymentAmount("");
+    setPaymentMethod("");
+    setCurrency("USD");
+
+    navigate("/"); // Adjust the navigation as required
   };
 
   return (

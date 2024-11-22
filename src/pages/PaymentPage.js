@@ -40,7 +40,6 @@ const PaymentPage = () => {
       return;
     }
 
-    
     alert(
       `Processing payment for ${planDetails.name} using ${paymentMethod}. ${
         paymentMethod === "Mpesa"
@@ -48,7 +47,7 @@ const PaymentPage = () => {
           : ""
       }`
     );
-    navigate("/"); 
+    navigate("/");
   };
 
   return (
